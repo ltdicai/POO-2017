@@ -17,6 +17,12 @@ TestCase subclass: #IdiomTest
 assert: aBlockClosure shouldNotTakeMoreThan: aDuration 
 	^((aBlockClosure durationToRun) < aDuration)! !
 
+!IdiomTest methodsFor: 'testing' stamp: 'DIC 4/22/2017 15:41:52'!
+should: aMethod raise: anException onExceptionDo: anExceptionMethod
+	^[aMethod value. self fail.]
+		on: anException
+		do: anExceptionMethod! !
+
 !IdiomTest methodsFor: 'testing' stamp: 'DIC 4/22/2017 14:59:11'!
 test01AddingCustomerShouldNotTakeMoreThan50Milliseconds
 
@@ -42,21 +48,21 @@ test02RemovingCustomerShouldNotTakeMoreThan100Milliseconds
 	
 ! !
 
-!IdiomTest methodsFor: 'testing' stamp: 'HernanWilkinson 5/9/2012 18:12'!
+!IdiomTest methodsFor: 'testing' stamp: 'DIC 4/22/2017 15:38:30'!
 test03CanNotAddACustomerWithEmptyName 
 
 	| customerBook |
 			
 	customerBook := CustomerBook new.
-
-	[ customerBook addCustomerNamed: ''.
-	self fail ]
-		on: Error 
-		do: [ :anError | 
+	
+	self should: [customerBook addCustomerNamed: ''.]
+		raise: Error
+		onExceptionDo:  [ :anError | 
 			self assert: anError messageText = CustomerBook customerCanNotBeEmptyErrorMessage.
-			self assert: customerBook isEmpty ]! !
+			self assert: customerBook isEmpty ]
+! !
 
-!IdiomTest methodsFor: 'testing' stamp: 'HernanWilkinson 5/16/2012 16:50'!
+!IdiomTest methodsFor: 'testing' stamp: 'DIC 4/22/2017 15:40:56'!
 test04CanNotRemoveAndInvalidCustomer
 	
 	| customerBook johnLennon |
@@ -65,13 +71,11 @@ test04CanNotRemoveAndInvalidCustomer
 	johnLennon := 'John Lennon'.
 	customerBook addCustomerNamed: johnLennon.
 	
-	[ customerBook removeCustomerNamed: 'Paul McCartney'.
-	self fail ]
-		on: NotFound 
-		do: [ :anError | 
+	self should: [ customerBook removeCustomerNamed: 'Paul McCartney'.]
+		raise: NotFound
+		onExceptionDo: [ :anError | 
 			self assert: customerBook numberOfCustomers = 1.
-			self assert: (customerBook includesCustomerNamed: johnLennon) ]
-! !
+			self assert: (customerBook includesCustomerNamed: johnLennon) ]! !
 
 
 !classDefinition: #CustomerBook category: #'Idiom-Exercise'!

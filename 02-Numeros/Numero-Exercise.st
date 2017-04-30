@@ -324,10 +324,13 @@ greatestCommonDivisorWith: anEntero
 	
 	^self class with: (value gcd: anEntero integerValue)! !
 
-!Entero methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 17:13:10'!
+!Entero methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 19:23:55'!
 multiplicativeInverse
 	
-	^(self class with:1) / self! !
+	self isZero ifTrue: [ self error: '0 no tiene inverso multiplicativo' ].
+	self isOne ifTrue: [ ^self ].
+	"^(self class with:1) / self"
+	^Fraccion with: (self class with: 1) over: self.! !
 
 !Entero methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 18:47:32'!
 multiplyEntero: anEntero 

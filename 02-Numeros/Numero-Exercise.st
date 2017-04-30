@@ -430,10 +430,10 @@ multiplicativeInverse
 
 	^denominator / numerator! !
 
-!Fraccion methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 18:48:58'!
+!Fraccion methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 19:49:06'!
 multiplyEntero: anEntero
 
-	^(anEntero * numerator) / denominator! !
+	^self class with:(anEntero * numerator) over: denominator! !
 
 !Fraccion methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 18:51:08'!
 multiplyFraccion: aFraccion

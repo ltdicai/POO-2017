@@ -212,6 +212,11 @@ invalidNumberType
 
 	self error: self class invalidNumberTypeErrorDescription! !
 
+!Numero methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 17:08:16'!
+multiplicativeInverse
+
+	self subclassResponsibility.! !
+
 
 !Numero methodsFor: 'testing' stamp: 'HernanWilkinson 5/7/2016 22:49'!
 isOne
@@ -282,10 +287,13 @@ initalizeWith: aValue
 	value := aValue! !
 
 
-!Entero methodsFor: 'arithmetic operations' stamp: 'HernanWilkinson 5/7/2016 23:13'!
+!Entero methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 16:50:26'!
 * aMultiplier 
 	
-	^self class with: value * aMultiplier integerValue
+	"^self class with: value * aMultiplier integerValue"
+	(aMultiplier isKindOf: self class) ifTrue: [^self class with: value * aMultiplier integerValue].
+	(aMultiplier isKindOf: Fraccion) ifTrue: [^(self * aMultiplier numerator) / aMultiplier denominator].
+	self invalidNumberType
 	! !
 
 !Entero methodsFor: 'arithmetic operations' stamp: 'DIC 4/25/2017 21:43:33'!
@@ -295,10 +303,13 @@ initalizeWith: aValue
 	(anAdder isKindOf: Fraccion) ifTrue: [^Fraccion with: (self * anAdder denominator) + anAdder numerator over: anAdder denominator].
 	self invalidNumberType! !
 
-!Entero methodsFor: 'arithmetic operations' stamp: 'HernanWilkinson 5/7/2016 23:14'!
+!Entero methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 17:19:34'!
 / aDivisor 
 	
-	^Fraccion with: self over: aDivisor! !
+	"^Fraccion with: self over: aDivisor"
+	(aDivisor isKindOf: self class) ifTrue: [^Fraccion with: self over: aDivisor].
+	(aDivisor isKindOf: Fraccion) ifTrue: [^self * (aDivisor multiplicativeInverse)].
+	self invalidNumberType! !
 
 !Entero methodsFor: 'arithmetic operations' stamp: 'HernanWilkinson 5/7/2016 21:55'!
 // aDivisor 
@@ -309,6 +320,11 @@ initalizeWith: aValue
 greatestCommonDivisorWith: anEntero 
 	
 	^self class with: (value gcd: anEntero integerValue)! !
+
+!Entero methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 17:13:10'!
+multiplicativeInverse
+	
+	^(self class with:1) / self! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -365,10 +381,20 @@ hash
 	^(numerator hash / denominator hash) hash! !
 
 
-!Fraccion methodsFor: 'arithmetic operations' stamp: 'HernanWilkinson 5/7/2016 23:14'!
+!Fraccion methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 16:53:16'!
 * aMultiplier 
 	
-	^(numerator * aMultiplier numerator) / (denominator * aMultiplier denominator)
+	"^(numerator * aMultiplier numerator) / (denominator * aMultiplier denominator)"
+	
+	| newNumerator newDenominator |
+	(aMultiplier isKindOf: self class) ifTrue: [
+		newNumerator := numerator * aMultiplier numerator.
+		newDenominator := denominator * aMultiplier denominator.
+		^newNumerator / newDenominator 
+		].
+	(aMultiplier isKindOf: Entero) ifTrue: [
+		^aMultiplier * self
+		]
 	! !
 
 !Fraccion methodsFor: 'arithmetic operations' stamp: 'DIC 4/25/2017 21:47:16'!
@@ -383,10 +409,18 @@ hash
 		^anAdder + self
 		]! !
 
-!Fraccion methodsFor: 'arithmetic operations' stamp: 'HernanWilkinson 5/7/2016 23:14'!
+!Fraccion methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 17:25:23'!
 / aDivisor 
 	
-	^(numerator * aDivisor denominator) / (denominator * aDivisor numerator)! !
+	"^(numerator * aDivisor denominator) / (denominator * aDivisor numerator)"
+	(aDivisor isKindOf: self class) ifTrue: [^self * (aDivisor multiplicativeInverse)].
+	(aDivisor isKindOf: Entero) ifTrue: [^self * (aDivisor multiplicativeInverse)].
+	self invalidNumberType! !
+
+!Fraccion methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 17:11:14'!
+multiplicativeInverse
+
+	^denominator / numerator! !
 
 
 !Fraccion methodsFor: 'accessing' stamp: 'HernanWilkinson 5/7/2016 21:56'!

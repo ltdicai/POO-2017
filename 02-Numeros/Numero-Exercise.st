@@ -296,12 +296,13 @@ initalizeWith: aValue
 	self invalidNumberType
 	! !
 
-!Entero methodsFor: 'arithmetic operations' stamp: 'DIC 4/25/2017 21:43:33'!
+!Entero methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 17:46:05'!
 + anAdder 
-	
-	(anAdder isKindOf: self class) ifTrue: [^self class with: value + anAdder integerValue].
-	(anAdder isKindOf: Fraccion) ifTrue: [^Fraccion with: (self * anAdder denominator) + anAdder numerator over: anAdder denominator].
-	self invalidNumberType! !
+
+	^anAdder addEntero: self
+	"(anAdder isKindOf: self class) ifTrue: [^self class with: value + anAdder integerValue]."
+	"(anAdder isKindOf: Fraccion) ifTrue: [^Fraccion with: (self * anAdder denominator) + anAdder numerator over: anAdder denominator]."
+	"self invalidNumberType"! !
 
 !Entero methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 17:19:34'!
 / aDivisor 
@@ -315,6 +316,11 @@ initalizeWith: aValue
 // aDivisor 
 	
 	^self class with: value // aDivisor integerValue! !
+
+!Entero methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 17:41:19'!
+addEntero: anEntero 
+
+	^self class with: value + anEntero integerValue! !
 
 !Entero methodsFor: 'arithmetic operations' stamp: 'HernanWilkinson 5/7/2016 21:00'!
 greatestCommonDivisorWith: anEntero 
@@ -416,6 +422,10 @@ hash
 	(aDivisor isKindOf: self class) ifTrue: [^self * (aDivisor multiplicativeInverse)].
 	(aDivisor isKindOf: Entero) ifTrue: [^self * (aDivisor multiplicativeInverse)].
 	self invalidNumberType! !
+
+!Fraccion methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 17:44:23'!
+addEntero: anEntero
+	^Fraccion with: (anEntero * denominator) + numerator over: denominator! !
 
 !Fraccion methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 17:11:14'!
 multiplicativeInverse

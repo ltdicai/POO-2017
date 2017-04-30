@@ -322,6 +322,12 @@ addEntero: anEntero
 
 	^self class with: value + anEntero integerValue! !
 
+!Entero methodsFor: 'arithmetic operations' stamp: 'ARM 4/30/2017 18:20:49'!
+addFraccion: aFraccion
+
+	^self + aFraccion
+! !
+
 !Entero methodsFor: 'arithmetic operations' stamp: 'HernanWilkinson 5/7/2016 21:00'!
 greatestCommonDivisorWith: anEntero 
 	
@@ -403,17 +409,20 @@ hash
 		]
 	! !
 
-!Fraccion methodsFor: 'arithmetic operations' stamp: 'DIC 4/25/2017 21:47:16'!
+!Fraccion methodsFor: 'arithmetic operations' stamp: 'ARM 4/30/2017 18:26:17'!
 + anAdder 
-| newNumerator newDenominator |
+
+	^anAdder addFraccion: self.
+	
+"| newNumerator newDenominator |
 	(anAdder isKindOf: self class) ifTrue: [
 		newNumerator := (numerator * anAdder denominator) + (denominator * anAdder numerator).
 		newDenominator := denominator * anAdder denominator.
 		^newNumerator / newDenominator 
 		].
 	(anAdder isKindOf: Entero) ifTrue: [
-		^anAdder + self
-		]! !
+		^anAdder + self"
+		! !
 
 !Fraccion methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 17:25:23'!
 / aDivisor 
@@ -426,6 +435,15 @@ hash
 !Fraccion methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 17:44:23'!
 addEntero: anEntero
 	^Fraccion with: (anEntero * denominator) + numerator over: denominator! !
+
+!Fraccion methodsFor: 'arithmetic operations' stamp: 'ARM 4/30/2017 18:22:32'!
+addFraccion: aFraccion
+
+|newNumerator newDenominator|
+
+		newNumerator := (numerator * aFraccion denominator) + (denominator * aFraccion numerator).
+		newDenominator := denominator * aFraccion denominator.
+		^ newNumerator / newDenominator ! !
 
 !Fraccion methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 17:11:14'!
 multiplicativeInverse

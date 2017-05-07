@@ -202,10 +202,10 @@ Object subclass: #Numero
 
 	self subclassResponsibility ! !
 
-!Numero methodsFor: 'arithmetic operations' stamp: 'HernanWilkinson 5/7/2016 22:49'!
+!Numero methodsFor: 'arithmetic operations' stamp: 'DIC 5/2/2017 16:02:19'!
 / aDivisor
 
-	self subclassResponsibility ! !
+	^self * (aDivisor multiplicativeInverse)! !
 
 !Numero methodsFor: 'arithmetic operations' stamp: 'HernanWilkinson 5/7/2016 22:48'!
 invalidNumberType
@@ -297,11 +297,6 @@ initalizeWith: aValue
 + anAdder 
 
 	^anAdder addEntero: self! !
-
-!Entero methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 18:57:06'!
-/ aDivisor 
-	
-	^self * (aDivisor multiplicativeInverse)! !
 
 !Entero methodsFor: 'arithmetic operations' stamp: 'HernanWilkinson 5/7/2016 21:55'!
 // aDivisor 
@@ -403,11 +398,6 @@ hash
 + anAdder 
 
 	^anAdder addFraccion: self! !
-
-!Fraccion methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 18:57:55'!
-/ aDivisor 
-	
-	^self *  (aDivisor multiplicativeInverse)! !
 
 !Fraccion methodsFor: 'arithmetic operations' stamp: 'DIC 4/30/2017 17:44:23'!
 addEntero: anEntero

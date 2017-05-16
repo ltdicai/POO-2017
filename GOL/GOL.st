@@ -74,10 +74,10 @@ test07CanNotCreateCellOutsideYBounds
 		withExceptionDo: [ :anError |
 			self assert: anError messageText equals: GameOfLife cellOutOfBounds ]! !
 
-!GOLTest methodsFor: 'testing' stamp: 'ARM 5/14/2017 15:46:09'!
-test08CanNotCreateTwoAliveCellsInTheSamePosition
+!GOLTest methodsFor: 'testing' stamp: 'DIC 5/16/2017 01:37:03'!
+test08IgnoreRepeatedAliveCells
 
-	|gol|
+	| gol |
 	 
 		gol :=  GameOfLife withLiveCells: { 1@1. 1@1 } withSize: 3@3.
 		self assert: (gol populationCount = 1).

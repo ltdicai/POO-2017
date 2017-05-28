@@ -1,0 +1,9 @@
+Que tal,
+ cuando entreguen el ejercicio de distancia, deben incluir una clase que se llame DistanceFactory cuyas instancias deben responder los siguientes mensajes:
+#minusOneMeter 
+#oneCentimeter 
+#oneHundredCentimeters 
+#oneMeter 
+#twoHundredCentimeters 
+#twoMeters 
+#zeroMeters

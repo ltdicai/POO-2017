@@ -1,4 +1,33 @@
 Que tal,
+ les paso el enunciado del ejercicio que deben hacer en esta semana. La entrega debe ser para el Martes 30, a las 19 hrs a mas tardar.
+
+ El ejercicio debe ser realizado por medio de TDD, o sea que tienen que escribir los tests ustedes y deben seguir la tecnica lo mejor posible.
+
+ El modelo que realicen debe permitir hacer:
+
+ unMetros := ....  <-- O sea, dado un objeto que representa un metro. Ustedes deben decidir como representar un metro.
+ unMetro = unMetro  <-- debe devolver true
+ (unMetro + unMetro) = dosMetros <-- debe devolver true. dosMetros representa la distancia dos metros. 
+ --- De ahora en adelante asumimos que entienden bien que representa el objeto a partir del nombre
+ unMetro = cienCentimetros  <-- debe devolver true
+ cienCentimetros = milMilimetros <-- creo que ya esta claro :-)
+
+ dosMetros - cienCentimetros = milMilimetros
+ unMetro * 2 = dosMetros
+ 2 * unMetro = dosMetros
+
+ unMetro / 2 = unMedioMetro  <-- unMedioMetro representa medio metro :-)
+ 
+ diezKilometros > unMetro  <-- deben devolver true...
+ unMetro < tresMetros
+ diezKilometros >= unMetro
+ unMetro <= tresMetros
+
+unMetro to: tresMetros  <-- representa un intervalo que va desde un metro a tres metros con pasos de un metro
+unMetro to: diezKilometros by: cincoCentimetros <-- representa un intervalo que va de un metro a diez kilometors cada cinco centimetros
+unMetro to: diezKilometros by: cincoCentimetros do:[...] <-- permite recorrer el intervalo 
+
+Que tal,
  cuando entreguen el ejercicio de distancia, deben incluir una clase que se llame DistanceFactory cuyas instancias deben responder los siguientes mensajes:
 #minusOneMeter 
 #oneCentimeter 

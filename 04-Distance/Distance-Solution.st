@@ -80,12 +80,9 @@ test09TwoMetresMinusHundredCentimetresEqualsThousandMillimetres
 test10OneMetreMultipliedByTwoEqualsTwoMetres
 	self assert: distanceFactory oneMeter * 2 = distanceFactory twoMeters ! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 23:37:26'!
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:55:52'!
 test11TwoMultipliedByOneMetresEqualsTwoMetres
-	| oneMetre twoMetres|
-	oneMetre := Distance withAmount: 1 withUnitOfDistance: Metre new.
-	twoMetres := Distance withAmount: 2 withUnitOfDistance: Metre new.
-	self assert: 2* oneMetre = twoMetres! !
+	self assert: 2* distanceFactory oneMeter = distanceFactory twoMeters! !
 
 !DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 23:38:11'!
 test12TenKilometresGreaterThanOneMetre

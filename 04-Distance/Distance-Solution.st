@@ -9,72 +9,50 @@ TestCase subclass: #DistanceTest
 setUp
 	distanceFactory := DistanceFactory new! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 22:41:29'!
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:03:39'!
 test01OneMetreEqualsAnotherMetre
-	| anotherOneMetre oneMetre |
-	oneMetre := Distance withAmount:1  withUnitOfDistance: Metre new.
-	anotherOneMetre := Distance withAmount: 1 withUnitOfDistance: Metre new.
-	self assert: oneMetre = anotherOneMetre.! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 22:42:30'!
+	self assert: DistanceFactory new oneMeter = DistanceFactory new oneMeter.! !
+
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:05:11'!
 test02OneMetrePlusOneMetreEqualsTwoMetres
-	| twoMetres oneMetre |
-	oneMetre := Distance withAmount: 1 withUnitOfDistance: Metre new.
-	twoMetres := Distance withAmount: 2 withUnitOfDistance: Metre new.
-	self assert: oneMetre + oneMetre = twoMetres.! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 22:42:51'!
+	self assert: DistanceFactory new oneMeter + DistanceFactory new oneMeter = DistanceFactory new twoMeters.! !
+
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:06:03'!
 test03OneMetreEqualsHundredCentimetres
-	| oneMetre hundredCentimetres |
-	oneMetre := Distance withAmount: 1 withUnitOfDistance: Metre new.
-	hundredCentimetres := Distance withAmount: 100 withUnitOfDistance: Centimetre new.
-	self assert: oneMetre = hundredCentimetres.! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 22:43:21'!
+	self assert: DistanceFactory new oneMeter = DistanceFactory new oneHundredCentimeters .! !
+
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:06:41'!
 test04OneMetreNotEqualsTenCentimetres
-	| oneMetre tenCentimetres |
-	oneMetre := Distance withAmount: 1 withUnitOfDistance: Metre new.
-	tenCentimetres := Distance withAmount: 10 withUnitOfDistance: Centimetre new.
-	self deny: oneMetre = tenCentimetres.! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 22:44:16'!
+	self deny: DistanceFactory new oneMeter = DistanceFactory new tenCentimeters .! !
+
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:09:17'!
 test05OneMetrePlusTenCentimetresEqualsHundredAndTenCentimetres
-	| oneMetre tenCentimetres hundredAndTenCentimetres |
-	oneMetre := Distance withAmount: 1 withUnitOfDistance: Metre new.
-	tenCentimetres := Distance withAmount: 10 withUnitOfDistance: Centimetre new.
-	hundredAndTenCentimetres := Distance withAmount: 110 withUnitOfDistance: Centimetre new.
-	self assert: oneMetre + tenCentimetres = hundredAndTenCentimetres.! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 22:45:53'!
+	self assert: DistanceFactory new oneMeter + DistanceFactory new tenCentimeters = DistanceFactory new oneHundredAndTenCentimeters .! !
+
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:14:20'!
 test06OneKilometrePlusOneMetreEqualsThousandAndOneMetres
-	| oneKilometre oneMetre thousandAndOneMetres |
-	oneKilometre := Distance withAmount: 1 withUnitOfDistance: Kilometre new.
-	oneMetre := Distance withAmount: 1 withUnitOfDistance: Metre new.
-	thousandAndOneMetres := Distance withAmount: 1001 withUnitOfDistance: Metre new.
-	self assert: oneKilometre + oneMetre = thousandAndOneMetres! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 22:46:24'!
+	self assert: DistanceFactory new oneKilometer + DistanceFactory new oneMeter = DistanceFactory new oneThousandAndOneMeters.! !
+
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:16:51'!
 test07OneCentimetrePlusOneMillimetresEqualsElevenMillimetres
-	| oneCentimetre oneMillimetre elevenMillimetres |
-	oneCentimetre := Distance withAmount: 1 withUnitOfDistance: Centimetre new.
-	oneMillimetre := Distance withAmount: 1 withUnitOfDistance: Millimetre new.
-	elevenMillimetres := Distance withAmount: 11 withUnitOfDistance: Millimetre new.
-	self assert: oneCentimetre + oneMillimetre = elevenMillimetres ! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 23:35:03'!
+	self assert: DistanceFactory new oneCentimeter + DistanceFactory new oneMillimeter = DistanceFactory new elevenMillimeters ! !
+
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:17:33'!
 test08OneMetreDividedByTwoEqualsHalfMetre
-	| oneMetre halfMetre |
-	oneMetre := Distance withAmount: 1 withUnitOfDistance: Metre new.
-	halfMetre := Distance withAmount: 1/2 withUnitOfDistance: Metre new.
-	self assert: oneMetre / 2 = halfMetre ! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 23:35:44'!
+	self assert: DistanceFactory new oneMeter / 2 = DistanceFactory new halfMeter. ! !
+
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:18:42'!
 test09TwoMetresMinusHundredCentimetresEqualsThousandMillimetres
-	| twoMetres hundredCentimetres thousandMillimetres |
-	twoMetres := Distance withAmount: 2 withUnitOfDistance: Metre new.
-	hundredCentimetres := Distance withAmount: 100 withUnitOfDistance: Centimetre new.
-	thousandMillimetres := Distance withAmount: 1000 withUnitOfDistance: Millimetre new.
-	self assert: twoMetres - hundredCentimetres = thousandMillimetres ! !
+
+	self assert: DistanceFactory new twoMeters - DistanceFactory new oneHundredCentimeters = DistanceFactory new oneThousandMillimeters. ! !
 
 !DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:53:14'!
 test10OneMetreMultipliedByTwoEqualsTwoMetres
@@ -284,10 +262,6 @@ elevenMillimeters
 halfMeter
 	^Distance withAmount: 0.5 withUnitOfDistance: Metre new.! !
 
-!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:38:21'!
-hundredAndTenCentimeters
-	^Distance withAmount: 110 withUnitOfDistance: Centimetre new.! !
-
 !DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:11:35'!
 minusOneMeter
 	^Distance withAmount: -1 withUnitOfDistance: Metre new.! !
@@ -303,6 +277,10 @@ oneHundredAndFiftyFiveCentimeters
 !DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:48:49'!
 oneHundredAndSeventyFiveCentimeters
 	^Distance withAmount: 175 withUnitOfDistance: Centimetre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:08:30'!
+oneHundredAndTenCentimeters
+	^Distance withAmount: 110 withUnitOfDistance: Centimetre new.! !
 
 !DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:49:46'!
 oneHundredAndThreeCentimeters
@@ -328,6 +306,14 @@ oneMeter
 oneMillimeter
 	^Distance withAmount: 1 withUnitOfDistance: Millimetre new.! !
 
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:11:46'!
+oneThousandAndOneMeters
+	^Distance withAmount: 1001 withUnitOfDistance: Metre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:12:06'!
+oneThousandMillimeters
+	^Distance withAmount: 1000 withUnitOfDistance: Millimetre new.! !
+
 !DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:38:10'!
 tenCentimeters
 	^Distance withAmount: 10 withUnitOfDistance: Centimetre new.! !
@@ -335,14 +321,6 @@ tenCentimeters
 !DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:46:32'!
 tenKilometers
 	^Distance withAmount: 10 withUnitOfDistance: Kilometre new.! !
-
-!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:43:20'!
-thousandAndOneMeters
-	^Distance withAmount: 1001 withUnitOfDistance: Metre new.! !
-
-!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:43:11'!
-thousandMillimeters
-	^Distance withAmount: 1000 withUnitOfDistance: Millimetre new.! !
 
 !DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:49:24'!
 threeCentimeters

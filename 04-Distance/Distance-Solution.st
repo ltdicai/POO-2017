@@ -271,6 +271,42 @@ withAmount: anAmount withUnitOfDistance: aUnitOfDistance
 	^self new withAmount:anAmount withUnitOfDistance:aUnitOfDistance! !
 
 
+!classDefinition: #DistanceFactory category: #'Distance-Solution'!
+Object subclass: #DistanceFactory
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Distance-Solution'!
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:11:35'!
+minusOneMeter
+	^Distance withAmount: -1 withUnitOfDistance: Metre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:11:58'!
+oneCentimeter
+	^Distance withAmount: 1 withUnitOfDistance: Centimetre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:12:14'!
+oneHundredCentimeters 
+	^Distance withAmount: 100 withUnitOfDistance: Centimetre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:12:32'!
+oneMeter
+	^Distance withAmount: 1 withUnitOfDistance: Metre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:13:17'!
+twoHundredCentimeters 
+	^Distance withAmount: 200 withUnitOfDistance: Centimetre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:13:33'!
+twoMeters  
+	^Distance withAmount: 2 withUnitOfDistance: Metre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:16:38'!
+zeroMeters
+	^Distance withAmount: 0 withUnitOfDistance: Metre new.! !
+
+
 !classDefinition: #UnitOfDistance category: #'Distance-Solution'!
 Object subclass: #UnitOfDistance
 	instanceVariableNames: ''

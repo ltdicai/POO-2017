@@ -9,131 +9,110 @@ TestCase subclass: #DistanceTest
 setUp
 	distanceFactory := DistanceFactory new! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:03:39'!
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:24:46'!
 test01OneMetreEqualsAnotherMetre
 
-	self assert: DistanceFactory new oneMeter = DistanceFactory new oneMeter.! !
+	self assert: distanceFactory oneMeter = distanceFactory oneMeter.! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:05:11'!
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:25:05'!
 test02OneMetrePlusOneMetreEqualsTwoMetres
 
-	self assert: DistanceFactory new oneMeter + DistanceFactory new oneMeter = DistanceFactory new twoMeters.! !
+	self assert: distanceFactory oneMeter + distanceFactory oneMeter = distanceFactory twoMeters.! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:06:03'!
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:25:21'!
 test03OneMetreEqualsHundredCentimetres
 
-	self assert: DistanceFactory new oneMeter = DistanceFactory new oneHundredCentimeters .! !
+	self assert: distanceFactory oneMeter = distanceFactory oneHundredCentimeters .! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:06:41'!
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:25:38'!
 test04OneMetreNotEqualsTenCentimetres
 
-	self deny: DistanceFactory new oneMeter = DistanceFactory new tenCentimeters .! !
+	self deny: distanceFactory oneMeter = distanceFactory tenCentimeters .! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:09:17'!
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:25:58'!
 test05OneMetrePlusTenCentimetresEqualsHundredAndTenCentimetres
 
-	self assert: DistanceFactory new oneMeter + DistanceFactory new tenCentimeters = DistanceFactory new oneHundredAndTenCentimeters .! !
+	self assert: distanceFactory oneMeter + distanceFactory tenCentimeters = distanceFactory oneHundredAndTenCentimeters .! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:14:20'!
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:26:16'!
 test06OneKilometrePlusOneMetreEqualsThousandAndOneMetres
 
-	self assert: DistanceFactory new oneKilometer + DistanceFactory new oneMeter = DistanceFactory new oneThousandAndOneMeters.! !
+	self assert: distanceFactory oneKilometer + distanceFactory oneMeter = distanceFactory oneThousandAndOneMeters.! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:16:51'!
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:26:37'!
 test07OneCentimetrePlusOneMillimetresEqualsElevenMillimetres
 
-	self assert: DistanceFactory new oneCentimeter + DistanceFactory new oneMillimeter = DistanceFactory new elevenMillimeters ! !
+	self assert: distanceFactory oneCentimeter + distanceFactory oneMillimeter = distanceFactory elevenMillimeters ! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:17:33'!
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:26:51'!
 test08OneMetreDividedByTwoEqualsHalfMetre
 
-	self assert: DistanceFactory new oneMeter / 2 = DistanceFactory new halfMeter. ! !
+	self assert: distanceFactory oneMeter / 2 = distanceFactory halfMeter. ! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:18:42'!
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:27:10'!
 test09TwoMetresMinusHundredCentimetresEqualsThousandMillimetres
 
-	self assert: DistanceFactory new twoMeters - DistanceFactory new oneHundredCentimeters = DistanceFactory new oneThousandMillimeters. ! !
+	self assert: distanceFactory twoMeters - distanceFactory oneHundredCentimeters = distanceFactory oneThousandMillimeters. ! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:53:14'!
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:23:41'!
 test10OneMetreMultipliedByTwoEqualsTwoMetres
+
 	self assert: distanceFactory oneMeter * 2 = distanceFactory twoMeters ! !
 
 !DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:55:52'!
 test11TwoMultipliedByOneMetresEqualsTwoMetres
 	self assert: 2* distanceFactory oneMeter = distanceFactory twoMeters! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 23:38:11'!
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:28:59'!
 test12TenKilometresGreaterThanOneMetre
-	| tenKilometres oneMetre|
-	oneMetre := Distance withAmount: 1 withUnitOfDistance: Metre new.
-	tenKilometres := Distance withAmount: 10 withUnitOfDistance: Kilometre new.
-	self assert: tenKilometres > oneMetre ! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 23:41:07'!
+	self assert: distanceFactory tenKilometers > distanceFactory oneMeter.! !
+
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:29:45'!
 test13OneMetreLesserThanThreeMetres
-	| oneMetre threeMetres |
-	oneMetre := Distance withAmount: 1 withUnitOfDistance: Metre new.
-	threeMetres := Distance withAmount: 3 withUnitOfDistance: Metre new.
-	self assert: oneMetre < threeMetres! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 23:39:27'!
+	self assert: distanceFactory oneMeter < distanceFactory threeMeters! !
+
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:30:38'!
 test14TenKilometresGreaterOrEqualThanOneMetre
-	| tenKilometres oneMetre|
-	oneMetre := Distance withAmount: 1 withUnitOfDistance: Metre new.
-	tenKilometres := Distance withAmount: 10 withUnitOfDistance: Kilometre new.
-	self assert: tenKilometres >= oneMetre.
-	self assert: oneMetre >= oneMetre! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 23:40:58'!
+	self assert: distanceFactory tenKilometers >= distanceFactory oneMeter.
+	self assert: distanceFactory oneMeter >= distanceFactory oneMeter! !
+
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:31:16'!
 test15OneMetreLesserOrEqualThanThreeMetres
-	| oneMetre threeMetres |
-	oneMetre := Distance withAmount: 1 withUnitOfDistance: Metre new.
-	threeMetres := Distance withAmount: 3 withUnitOfDistance: Metre new.
-	self assert: oneMetre <= threeMetres.
-	self assert: threeMetres <= threeMetres! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 23:46:01'!
+	self assert: distanceFactory oneMeter <= distanceFactory threeMeters.
+	self assert: distanceFactory threeMeters <=distanceFactory threeMeters.! !
+
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:32:44'!
 test16CanCreateRangeFromOneMetreToThreeMetresByOneMetreStep
-	| oneMetre threeMetres twoMetres |
-	oneMetre := Distance withAmount: 1 withUnitOfDistance: Metre new.
-	twoMetres := Distance withAmount: 2 withUnitOfDistance: Metre new.
-	threeMetres := Distance withAmount: 3 withUnitOfDistance: Metre new.
-	self assert: (oneMetre to: threeMetres) = (OrderedCollection with: oneMetre with: twoMetres with:threeMetres)! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 00:30:45'!
+	self assert: (distanceFactory oneMeter to: distanceFactory threeMeters) = (OrderedCollection with: distanceFactory oneMeter with: distanceFactory twoMeters with: distanceFactory threeMeters)! !
+
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:39:50'!
 test17CanCreateRangeFromOneMetreToTwoThousandMillimetresByTwentyFiveCentimetres
-	| hundredAndFiftyCentimetres hundredAndSeventyFiveCentimetres hundredAndTwentyFiveCentimetres hundredCentimetres twoHundredCentimetres twoThousandMillimetres oneMetre twentyFiveCentimetres |
-	oneMetre := Distance withAmount: 1 withUnitOfDistance: Metre new.
-	twoThousandMillimetres := Distance withAmount: 2000 withUnitOfDistance: Millimetre new.
-	twentyFiveCentimetres := Distance withAmount: 25 withUnitOfDistance: Centimetre new.
-	hundredCentimetres := Distance withAmount: 100 withUnitOfDistance: Centimetre new.
-	hundredAndTwentyFiveCentimetres := Distance withAmount: 125 withUnitOfDistance: Centimetre new.
-	hundredAndFiftyCentimetres := Distance withAmount: 150 withUnitOfDistance: Centimetre new.
-	hundredAndSeventyFiveCentimetres := Distance withAmount: 175 withUnitOfDistance: Centimetre new.
-	twoHundredCentimetres := Distance withAmount: 200 withUnitOfDistance: Centimetre new.
 	
-	self assert: (oneMetre to: twoThousandMillimetres by: twentyFiveCentimetres ) = (
+	self assert: (distanceFactory oneMeter to: distanceFactory twoThousandMillimeters by: distanceFactory twentyFiveCentimeters ) = (
 		OrderedCollection 
-			with: oneMetre
-			with: hundredAndTwentyFiveCentimetres
-			with: hundredAndFiftyCentimetres 
-			with: hundredAndSeventyFiveCentimetres
-			with: twoHundredCentimetres )! !
+			with: distanceFactory oneMeter
+			with: distanceFactory oneHundredAndTwentyFiveCentimeters
+			with: distanceFactory oneHundredAndFiftyCentimeters 
+			with: distanceFactory oneHundredAndSeventyFiveCentimeters
+			with: distanceFactory twoHundredCentimeters )! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 00:50:58'!
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:44:17'!
 test18IterateOverRangeAndAddThreeCentimetres
-	| oneMetre threeMetres threeCentimetres oneHundredAndThreeCentimetres twoHundredAndThreeCentimetres threeHundredAndThreeCentimetres aNewRange|
-	oneMetre := Distance withAmount: 1 withUnitOfDistance: Metre new.
-	threeMetres := Distance withAmount: 3 withUnitOfDistance: Metre new.
-	threeCentimetres := Distance withAmount: 3 withUnitOfDistance: Centimetre new.
-	oneHundredAndThreeCentimetres := Distance withAmount: 103 withUnitOfDistance: Centimetre new.
-	twoHundredAndThreeCentimetres := Distance withAmount: 203 withUnitOfDistance: Centimetre new.
-	threeHundredAndThreeCentimetres := Distance withAmount: 303 withUnitOfDistance: Centimetre new.
+	| aNewRange|
+	
 	aNewRange := OrderedCollection new.
-	oneMetre to: threeMetres by: oneMetre do: [:aDistance | 
-		aNewRange add: (aDistance + threeCentimetres)
+	distanceFactory oneMeter to: distanceFactory threeMeters by: distanceFactory oneMeter do: [:aDistance | 
+		aNewRange add: (aDistance + distanceFactory threeCentimeters)
 	].
-	self assert: aNewRange = (OrderedCollection with: oneHundredAndThreeCentimetres with: twoHundredAndThreeCentimetres with: threeHundredAndThreeCentimetres )! !
+	self assert: aNewRange = (OrderedCollection 
+									with: distanceFactory oneHundredAndThreeCentimeters 
+									with: distanceFactory twoHundredAndThreeCentimeters 
+									with: distanceFactory threeHundredAndThreeCentimeters ).! !
 
 
 !classDefinition: #Distance category: #'Distance-Solution'!
@@ -270,8 +249,8 @@ minusOneMeter
 oneCentimeter
 	^Distance withAmount: 1 withUnitOfDistance: Centimetre new.! !
 
-!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:48:40'!
-oneHundredAndFiftyFiveCentimeters
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:38:42'!
+oneHundredAndFiftyCentimeters
 	^Distance withAmount: 150 withUnitOfDistance: Centimetre new.! !
 
 !DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:48:49'!
@@ -350,8 +329,8 @@ twoHundredCentimeters
 twoMeters  
 	^Distance withAmount: 2 withUnitOfDistance: Metre new.! !
 
-!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:47:29'!
-twoThousandMillmeters
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'ARM 5/29/2017 22:35:40'!
+twoThousandMillimeters
 	^Distance withAmount: 2000 withUnitOfDistance: Millimetre new.! !
 
 !DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:16:38'!

@@ -76,12 +76,9 @@ test09TwoMetresMinusHundredCentimetresEqualsThousandMillimetres
 	thousandMillimetres := Distance withAmount: 1000 withUnitOfDistance: Millimetre new.
 	self assert: twoMetres - hundredCentimetres = thousandMillimetres ! !
 
-!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 23:36:11'!
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:53:14'!
 test10OneMetreMultipliedByTwoEqualsTwoMetres
-	| oneMetre twoMetres|
-	oneMetre := Distance withAmount: 1 withUnitOfDistance: Metre new.
-	twoMetres := Distance withAmount: 2 withUnitOfDistance: Metre new.
-	self assert: oneMetre * 2 = twoMetres! !
+	self assert: distanceFactory oneMeter * 2 = distanceFactory twoMeters ! !
 
 !DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 23:37:26'!
 test11TwoMultipliedByOneMetresEqualsTwoMetres
@@ -282,6 +279,18 @@ Object subclass: #DistanceFactory
 	poolDictionaries: ''
 	category: 'Distance-Solution'!
 
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:42:08'!
+elevenMillimeters
+	^Distance withAmount: 11 withUnitOfDistance: Millimetre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:42:30'!
+halfMeter
+	^Distance withAmount: 0.5 withUnitOfDistance: Metre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:38:21'!
+hundredAndTenCentimeters
+	^Distance withAmount: 110 withUnitOfDistance: Centimetre new.! !
+
 !DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:11:35'!
 minusOneMeter
 	^Distance withAmount: -1 withUnitOfDistance: Metre new.! !
@@ -290,13 +299,73 @@ minusOneMeter
 oneCentimeter
 	^Distance withAmount: 1 withUnitOfDistance: Centimetre new.! !
 
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:48:40'!
+oneHundredAndFiftyFiveCentimeters
+	^Distance withAmount: 150 withUnitOfDistance: Centimetre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:48:49'!
+oneHundredAndSeventyFiveCentimeters
+	^Distance withAmount: 175 withUnitOfDistance: Centimetre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:49:46'!
+oneHundredAndThreeCentimeters
+	^Distance withAmount: 103 withUnitOfDistance: Centimetre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:48:20'!
+oneHundredAndTwentyFiveCentimeters
+	^Distance withAmount: 125 withUnitOfDistance: Centimetre new.! !
+
 !DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:12:14'!
 oneHundredCentimeters 
 	^Distance withAmount: 100 withUnitOfDistance: Centimetre new.! !
 
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:38:44'!
+oneKilometer
+	^Distance withAmount: 1 withUnitOfDistance: Kilometre new.! !
+
 !DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:12:32'!
 oneMeter
 	^Distance withAmount: 1 withUnitOfDistance: Metre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:41:57'!
+oneMillimeter
+	^Distance withAmount: 1 withUnitOfDistance: Millimetre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:38:10'!
+tenCentimeters
+	^Distance withAmount: 10 withUnitOfDistance: Centimetre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:46:32'!
+tenKilometers
+	^Distance withAmount: 10 withUnitOfDistance: Kilometre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:43:20'!
+thousandAndOneMeters
+	^Distance withAmount: 1001 withUnitOfDistance: Metre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:43:11'!
+thousandMillimeters
+	^Distance withAmount: 1000 withUnitOfDistance: Millimetre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:49:24'!
+threeCentimeters
+	^Distance withAmount: 3 withUnitOfDistance: Centimetre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:50:09'!
+threeHundredAndThreeCentimeters
+	^Distance withAmount: 303 withUnitOfDistance: Centimetre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:46:50'!
+threeMeters
+	^Distance withAmount: 3 withUnitOfDistance: Metre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:47:57'!
+twentyFiveCentimeters
+	^Distance withAmount: 25 withUnitOfDistance: Centimetre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:50:00'!
+twoHundredAndThreeCentimeters
+	^Distance withAmount: 203 withUnitOfDistance: Centimetre new.! !
 
 !DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:13:17'!
 twoHundredCentimeters 
@@ -305,6 +374,10 @@ twoHundredCentimeters
 !DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:13:33'!
 twoMeters  
 	^Distance withAmount: 2 withUnitOfDistance: Metre new.! !
+
+!DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:47:29'!
+twoThousandMillmeters
+	^Distance withAmount: 2000 withUnitOfDistance: Millimetre new.! !
 
 !DistanceFactory methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:16:38'!
 zeroMeters

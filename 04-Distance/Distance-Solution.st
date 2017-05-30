@@ -1,9 +1,13 @@
 !classDefinition: #DistanceTest category: #'Distance-Solution'!
 TestCase subclass: #DistanceTest
-	instanceVariableNames: ''
+	instanceVariableNames: 'distanceFactory'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Distance-Solution'!
+
+!DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/29/2017 21:33:35'!
+setUp
+	distanceFactory := DistanceFactory new! !
 
 !DistanceTest methodsFor: 'as yet unclassified' stamp: 'DIC 5/28/2017 22:41:29'!
 test01OneMetreEqualsAnotherMetre

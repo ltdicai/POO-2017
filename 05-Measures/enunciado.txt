@@ -1,0 +1,62 @@
+Se deben poder representar cualquier tipo de medidas como:
+1 kilogramo, 10 pesos, 30 litros, 50 dolares, 10 grados centigrados o 20 grados kelvin, etc.
+
+Se debe poder hacer operaciones aritmeticas entre medidas del mismo tipo, como sucedia hasta ahora con las distancias. Por ejemplo:
+1 kilogramo + 100 gramos
+10 pesos - 5 centavos de peso
+50 dolares * 10
+30 litros / 10
+
+Tambien se debe poder sumar o restar medidas de distinto tipo:
+10 pesos + 50 dolares = 10 pesos + 50 dolares :-)
+1 kilogramo + 30 litros = 30 litros + 1 kilogramo
+
+Convertir una medida a otra unidad del mismo tipo:
+unkilogramo convertTo: gramo
+pero no a otro tipo de medida:
+diezPesos convertoTo: metro --> error
+
+Se deben poder comparar medidas de cualquier tipo, por ejemplo:
+10 pesos = 20 dollares --> da falso, no error
+10 kilos = 20 litros --> da falso, no error
+
+Recordar que nada es igual a nada :-) o sea:
+0 metros = 0 pesos
+0 pesos = 0 litros
+0 kelvin = 0 kilos (pero no 0 Fahrenheit o 0 centigrados)
+
+Se deben poder crear medidas multiplicando un numero por una unidad, por ejemplo:
+10*metro --> devuelve una medida que representa 10 metros
+5*kilogramo -> devuelve 5 kilogramos
+
+Se tiene que poder representar medidas de unidades compuestas como:
+10 metros/segundo (velocidad)
+50 metros/(segundo*segundo) (aceleracion)
+
+por lo tanto deberia poder hacer:
+
+(10 metros/segundo) + ((50 metros/(segundo*segundo))*10 segundo) =
+(10 metros/segundo) + (500 metros/segundo) = 510 metros/segundo (o sea, velocidad final).
+
+Las medidas del mismo tipo definen un orden total y por lo tanto deben ser comparables por menor, mayor, etc.
+Se debe poder generar intervalos de cualquier tipo de medida
+
+----------------------------------------------------------------------------------------------------------------
+
+Que tal,
+ la entrega del ejercicio de Medidas debe cumplir con los siguientes puntos:
+
+1) La categoria de las clases de la solucion debe llamarse Measure-Solution
+2) La clase que represente una medida debe responder los mensajes #amount y #unit
+3) Debe existir una clase llamada MeasureFactory que debe responder los siguientes mensajes:
+a) Distance units: centimeter decameter decimeter hectometer kilometer meter millimeter
+b) Distance measures: minusOneMeter oneCentimeter oneHundredCentimeters oneMeter twoHundredCentimeters twoMeters zeroMeters
+c) Temperature units: celsius fahrenheit kelvin 
+d) Temperature measures: oneCelsius thirtyTwoFahrenheits twoCelsius zeroCelsius zeroKelvin
+e) Time units: day hour minute second 
+f) Time measures: oneDay oneHour oneMinute oneSecond sixtyMinutes sixtyOneSeconds sixtySeconds twentyFourHours twoSeconds zeroSeconds
+g) Compound measures: eightCubicMeters fourSquaredMeters oneHundredTwentyOneMetersPerSecond oneMeterPerSecond oneSquaredMeter oneSquaredSecond twoMetersBySecond twoMetersPerSquaredSecond twoMetersTimesSecond
+4) La clase MeasureFactory debe implementar el mensaje #finalSpeedStartingAt:accelerating:during: que debe implementar la formula de velocidad final: vf = vi + a * t 
+5) La entrega la deben dejar en el directorio "05-Measure" de su repositorio para el martes 6 de Junio, antes de las 19 hrs.
+
+

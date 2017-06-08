@@ -71,19 +71,19 @@ test15
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [:anError | self assert: anError messageText =  'Cant convert to unrelated unit']! !
 
-!MeasureTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 14:11:25'!
+!MeasureTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:16:01'!
 test16
-	self assert: (MeasureFactory zeroCentigrades convertTo: UnitFactory kelvin) = MeasureFactory twoHundredAndThreeAndSomeKelvin.! !
+	self assert: (MeasureFactory zeroCelsius convertTo: UnitFactory kelvin) = MeasureFactory twoHundredAndThreeAndSomeKelvin.! !
 
-!MeasureTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 14:15:50'!
+!MeasureTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:23:54'!
 test17
-	self assert: 0 * UnitFactory kelvin = MeasureFactory zeroKelvins.
+	self assert: 0 * UnitFactory kelvin = MeasureFactory zeroKelvin.
 	self assert: UnitFactory meter * 2 = MeasureFactory twoMeters.! !
 
-!MeasureTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 15:48:39'!
+!MeasureTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:34:30'!
 test18
-	self assert: MeasureFactory oneMeter * MeasureFactory oneMeter = MeasureFactory oneMeterSquared.
-	self assert: MeasureFactory oneMeter * MeasureFactory zeroKelvins  = MeasureFactory zeroKelvins.! !
+	self assert: MeasureFactory oneMeter * MeasureFactory oneMeter = MeasureFactory oneSquaredMeter.
+	self assert: MeasureFactory oneMeter * MeasureFactory zeroKelvin  = MeasureFactory zeroKelvin.! !
 
 !MeasureTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 15:52:03'!
 test19
@@ -316,13 +316,97 @@ Object subclass: #MeasureFactory
 MeasureFactory class
 	instanceVariableNames: ''!
 
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:22:43'!
+celsius
+	^UnitFactory celsius! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:10:15'!
+centimeter
+	^UnitFactory centimeter! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:30:56'!
+cubicMeter
+	^{ self meter. self meter . self meter}! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:26:24'!
+day
+	^UnitFactory day! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:10:35'!
+decameter
+	^UnitFactory decameter! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:10:27'!
+decimeter
+	^UnitFactory decimeter! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:32:05'!
+eightCubicMeters
+	^CompoundMeasure withAmount: 8 withUnits: self cubicMeter! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:22:25'!
+fahrenheit
+	^UnitFactory fahrenheit ! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:40:55'!
+finalSpeedStartingAt: aCompoundMeasure accelerating: anotherCompoundMeasure during: aTimeMeasure
+	^aCompoundMeasure + (anotherCompoundMeasure * aTimeMeasure) ! !
+
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:13:16'!
 fourMeters
 	^Distance withAmount: 4 withUnit: UnitFactory meter! !
 
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:31:55'!
+fourSquareMeters
+	^CompoundMeasure withAmount: 4 withUnits: self squareMeter ! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:10:47'!
+hectometer
+	^UnitFactory hectometer! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:26:30'!
+hour
+	^UnitFactory hour! !
+
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:14:37'!
 hundredCentimeters
 	^Distance withAmount: 100 withUnit: UnitFactory centimeter! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:22:34'!
+kelvin
+	^UnitFactory kelvin ! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:10:59'!
+kilometer
+	^UnitFactory kilometer! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:43:41'!
+meter
+	^UnitFactory meter! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:11:10'!
+millimeter
+	^UnitFactory millimeter! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:11:51'!
+minusOneMeter
+	^Distance withAmount: -1 withUnit: self meter! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:26:37'!
+minute
+	^UnitFactory minute! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:14:26'!
+oneCelsius
+	^Temperature withAmount: 1 withUnit: self celsius! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:12:25'!
+oneCentimeter
+	^Distance withAmount: 1 withUnit: self centimeter! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:27:15'!
+oneDay
+	^TimeMeasure withAmount: 1 withUnit: self day! !
 
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:15:25'!
 oneDollar
@@ -331,6 +415,18 @@ oneDollar
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:16:57'!
 oneGram
 	^Mass withAmount: 1 withUnit: UnitFactory gram! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:27:24'!
+oneHour
+	^TimeMeasure withAmount: 1 withUnit: self hour! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:13:20'!
+oneHundredCentimeters
+	^Distance withAmount: 100 withUnit: self centimeter! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:33:10'!
+oneHundredTwentyOneMetersPerSecond
+	^CompoundMeasure withAmount: 121 multiplyingUnits: {self meter} dividingUnits: {self second}! !
 
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:16:50'!
 oneMeter
@@ -344,25 +440,69 @@ oneMeterAndOneDollar
 oneMeterAndOneGram
 	^MeasureGroup with: MeasureFactory oneMeter with: MeasureFactory oneGram! !
 
-!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 16:06:24'!
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:33:27'!
 oneMeterPerSecond
-	^CompoundMeasure withAmount: 1 multiplyingUnits: {UnitFactory meter}  dividingUnits: {UnitFactory second}! !
+	^CompoundMeasure withAmount: 1 multiplyingUnits: {self meter} dividingUnits: {self second}! !
 
-!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 15:34:27'!
-oneMeterSquared
-	^CompoundMeasure withAmount: 1 withUnits: (OrderedCollection withAll: {UnitFactory meter . UnitFactory meter})! !
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:27:32'!
+oneMinute
+	^TimeMeasure withAmount: 1 withUnit: self minute! !
 
-!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 15:54:30'!
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:27:42'!
 oneSecond
-	^TimeMeasure withAmount: 1 withUnit: UnitFactory second! !
+	^TimeMeasure withAmount: 1 withUnit: self second! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:33:51'!
+oneSquaredMeter
+	^CompoundMeasure withAmount: 1 withUnits: self squareMeter ! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:35:45'!
+oneSquaredSecond
+	^CompoundMeasure withAmount: 1 withUnits: { self second . self second }! !
 
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:16:43'!
 oneThirdMeter
 	^Distance withAmount: 1/3 withUnit: UnitFactory meter! !
 
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:26:44'!
+second
+	^UnitFactory second! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:28:06'!
+sixtyMinutes
+	^TimeMeasure withAmount: 60 withUnit: self minute! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:28:23'!
+sixtyOneSeconds
+	^TimeMeasure withAmount: 61 withUnit: self second! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:28:34'!
+sixtySeconds
+	^TimeMeasure withAmount: 60 withUnit: self second! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:31:16'!
+squareMeter
+	^{ self meter. self meter}! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:15:05'!
+thirtyTwoFahrenheits
+	^Temperature withAmount: 32 withUnit: self fahrenheit! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:28:52'!
+twentyFourHours
+	^TimeMeasure withAmount: 24 withUnit: self hour! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:15:26'!
+twoCelsius
+	^Temperature withAmount: 2 withUnit: self celsius! !
+
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 14:12:07'!
 twoHundredAndThreeAndSomeKelvin
 	^Temperature withAmount: 273.15 withUnit: UnitFactory kelvin ! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:13:10'!
+twoHundredCentimeters
+	^Distance withAmount: 200 withUnit: self centimeter! !
 
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:17:11'!
 twoMeters
@@ -372,9 +512,29 @@ twoMeters
 twoMetersAndOneDollar
 	^MeasureGroup with: self twoMeters with: self oneDollar! !
 
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:36:33'!
+twoMetersBySecond
+	^CompoundMeasure withAmount: 2 withUnits: { self meter . self second }! !
+
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:09:54'!
 twoMetersOneDollarAndOneGram
 	^MeasureGroup with: MeasureFactory twoMeters with: MeasureFactory oneDollar with: MeasureFactory oneGram! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:37:26'!
+twoMetersPerSquaredSecond
+	^CompoundMeasure withAmount: 2 multiplyingUnits: { self meter } dividingUnits: { self second . self second }! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:38:18'!
+twoMetersTimesSecond
+	^self twoMetersBySecond ! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:29:05'!
+twoSeconds
+	^TimeMeasure withAmount: 2 withUnit: self second! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:15:43'!
+zeroCelsius
+	^Temperature withAmount: 0 withUnit: self celsius! !
 
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 11:54:37'!
 zeroCentigrades
@@ -384,9 +544,9 @@ zeroCentigrades
 zeroDollars
 	^Currency withAmount: 0 withUnit: UnitFactory dollar! !
 
-!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 14:18:00'!
-zeroKelvins
-	^Temperature withAmount: 0 withUnit: UnitFactory kelvin ! !
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:23:15'!
+zeroKelvin
+	^Temperature withAmount: 0 withUnit: self kelvin ! !
 
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:17:53'!
 zeroMeters
@@ -399,6 +559,10 @@ zeroMetersAndOneDollar
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:59:43'!
 zeroMetersMinusOneGramAndOneDollar
 	^MeasureGroup with: self zeroMeters with: self oneGram negated with: self oneDollar! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:29:17'!
+zeroSeconds
+	^TimeMeasure withAmount: 0 withUnit: self second! !
 
 
 !classDefinition: #MeasureGroup category: #'Measure-Solution'!
@@ -559,6 +723,10 @@ Object subclass: #UnitFactory
 UnitFactory class
 	instanceVariableNames: ''!
 
+!UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:16:40'!
+celsius
+	^Unit named: #celsius of: Temperature withRatio: 1.! !
+
 !UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:44:33'!
 centimeter
 	^Unit named: 'centimeter' of:Distance withRatio: 1/100! !
@@ -567,13 +735,37 @@ centimeter
 centrigrade
 	^Unit named: 'centrigrade' of: Temperature withRatio: 1.! !
 
+!UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:25:20'!
+day
+	^Unit named: #day of: TimeMeasure withRatio: 86400! !
+
+!UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:07:40'!
+decameter
+	^Unit named: #decameter of: Distance withRatio: 10! !
+
+!UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:08:01'!
+decimeter
+	^Unit named: #decimeter of: Distance withRatio: 1/10! !
+
 !UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:24:22'!
 dollar
 	^Unit named: 'dollar' of: Currency withRatio: 1! !
 
+!UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:21:25'!
+fahrenheit
+	^Unit named: #fahrenheit of: Temperature withConverterTo: [:anAmount | anAmount - 32 * 5/9] withConverterFrom: [:anAmount | anAmount * 9/5 + 32]! !
+
 !UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 13:50:58'!
 gram
 	^Unit named: 'gram' of: Mass withRatio: 1/1000! !
+
+!UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:08:24'!
+hectometer
+	^Unit named: #hectometer of: Distance withRatio: 100! !
+
+!UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:25:48'!
+hour
+	^Unit named: #hour of: TimeMeasure withRatio: 3600! !
 
 !UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 14:11:01'!
 kelvin
@@ -583,9 +775,21 @@ kelvin
 kilogram
 	^Unit named: 'kilogram' of: Mass withRatio: 1! !
 
+!UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:08:42'!
+kilometer
+	^Unit named: #kilometer of: Distance withRatio: 1000! !
+
 !UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:19:22'!
 meter
 	^Unit named: 'meter' of: Distance withRatio: 1! !
+
+!UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:09:00'!
+millimeter
+	^Unit named: #millimeter of: Distance withRatio: 1/1000! !
+
+!UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 17:26:03'!
+minute
+	^Unit named: #minute of: TimeMeasure withRatio: 60! !
 
 !UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 15:54:06'!
 second

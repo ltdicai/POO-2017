@@ -45,6 +45,14 @@ test09
 test10
 	self assert: MeasureFactory twoMeters - MeasureFactory hundredCentimeters = MeasureFactory oneMeter ! !
 
+!MeasureTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:53:46'!
+test11
+	self assert: MeasureFactory oneMeterAndOneDollar - MeasureFactory oneMeter = MeasureFactory zeroMetersAndOneDollar! !
+
+!MeasureTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:56:43'!
+test12
+	self assert: MeasureFactory oneMeterAndOneDollar - MeasureFactory oneMeterAndOneGram = MeasureFactory zeroMetersMinusOneGramAndOneDollar! !
+
 
 !classDefinition: #Measure category: #'Measure-Solution'!
 Object subclass: #Measure
@@ -203,6 +211,14 @@ zeroDollars
 zeroMeters
 	^Distance withAmount: 0 withRatio: 1.! !
 
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:55:17'!
+zeroMetersAndOneDollar
+	^MeasureGroup with: self zeroMeters with: self oneDollar! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:59:43'!
+zeroMetersMinusOneGramAndOneDollar
+	^MeasureGroup with: self zeroMeters with: self oneGram negated with: self oneDollar! !
+
 
 !classDefinition: #MeasureGroup category: #'Measure-Solution'!
 Object subclass: #MeasureGroup
@@ -214,6 +230,14 @@ Object subclass: #MeasureGroup
 !MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:35:30'!
 + anAdder
 	^anAdder addToMeasureGroup: self! !
+
+!MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:58:51'!
+- anAdder
+	(anAdder isKindOf: self class) ifTrue: [
+		anAdder contents do: [:aMeasure| self addMeasure: aMeasure negated].
+		^self
+	].
+	^self addMeasure: anAdder negated! !
 
 !MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 19:43:57'!
 = aMeasureGroup

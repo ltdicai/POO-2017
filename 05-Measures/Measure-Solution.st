@@ -45,16 +45,19 @@ Object subclass: #Measure
 	poolDictionaries: ''
 	category: 'Measure-Solution'!
 
-!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 19:48:31'!
-+ anAdder 
-	(anAdder isKindOf: MeasureGroup) ifTrue: [^anAdder + self].
-	(anAdder isKindOf: self class) ifFalse: [^MeasureGroup with: self with: anAdder].
-	^anAdder class withAmount: amount * ratio + (anAdder amount * anAdder ratio) withRatio: 1.! !
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/7/2017 23:54:48'!
++ anAdder
+	^anAdder addMeasure: self! !
 
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:54:24'!
 = aMeasure
 	^(amount = 0 and: [^aMeasure compareWithNoAmount]) or: [(aMeasure isKindOf: self class ) and: [amount * ratio = (aMeasure amount * aMeasure ratio)]]
 	! !
+
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/7/2017 23:54:33'!
+addMeasure: aMeasure 
+	(aMeasure isKindOf: self class) ifFalse: [^MeasureGroup with: self with: aMeasure].
+	^aMeasure class withAmount: amount * ratio + (aMeasure amount * aMeasure ratio) withRatio: 1.! !
 
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 16:32:16'!
 amount
@@ -179,6 +182,10 @@ Object subclass: #MeasureGroup
 !MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 19:43:57'!
 = aMeasureGroup
 	^contents = aMeasureGroup contents! !
+
+!MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/7/2017 23:53:13'!
+addMeasure: aMeasure 
+	^self + aMeasure ! !
 
 !MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 19:44:12'!
 contents

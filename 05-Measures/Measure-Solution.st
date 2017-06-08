@@ -63,6 +63,10 @@ addMeasure: aMeasure
 	(aMeasure isKindOf: self class) ifFalse: [^MeasureGroup with: self with: aMeasure].
 	^aMeasure class withAmount: amount * ratio + (aMeasure amount * aMeasure ratio) withRatio: 1.! !
 
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:35:55'!
+addToMeasureGroup: aMeasureGroup
+	^aMeasureGroup addMeasure: self! !
+
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 16:32:16'!
 amount
 	^amount ! !
@@ -195,25 +199,26 @@ Object subclass: #MeasureGroup
 	poolDictionaries: ''
 	category: 'Measure-Solution'!
 
-!MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:22:48'!
+!MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:35:30'!
 + anAdder
-	(anAdder isKindOf: self class) ifTrue: [
-		anAdder contents do: [:aMeasure | self addMeasure: aMeasure].
-		^self.
-	].
-	contents
-		at: anAdder class name
-		ifPresent: [:existingMeasure | contents at: existingMeasure class name put: existingMeasure + anAdder]
-		ifAbsent: [ contents at: anAdder class name put: anAdder ].
-	^self.! !
+	^anAdder addToMeasureGroup: self! !
 
 !MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 19:43:57'!
 = aMeasureGroup
 	^contents = aMeasureGroup contents! !
 
-!MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/7/2017 23:53:13'!
+!MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:34:59'!
 addMeasure: aMeasure 
-	^self + aMeasure ! !
+	contents
+		at: aMeasure class name
+		ifPresent: [:existingMeasure | contents at: existingMeasure class name put: existingMeasure + aMeasure]
+		ifAbsent: [ contents at: aMeasure class name put: aMeasure ].
+	^self.! !
+
+!MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:33:28'!
+addToMeasureGroup: aMeasureGroup
+	self contents do: [:aMeasure | aMeasureGroup addMeasure: aMeasure].
+	^aMeasureGroup .! !
 
 !MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 19:44:12'!
 contents

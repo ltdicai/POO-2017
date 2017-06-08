@@ -41,6 +41,10 @@ test08
 test09
 	self assert: MeasureFactory oneMeterAndOneDollar + MeasureFactory oneMeterAndOneGram = MeasureFactory twoMetersOneDollarAndOneGram! !
 
+!MeasureTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:45:30'!
+test10
+	self assert: MeasureFactory twoMeters - MeasureFactory hundredCentimeters = MeasureFactory oneMeter ! !
+
 
 !classDefinition: #Measure category: #'Measure-Solution'!
 Object subclass: #Measure
@@ -52,6 +56,10 @@ Object subclass: #Measure
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/7/2017 23:54:48'!
 + anAdder
 	^anAdder addMeasure: self! !
+
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:47:48'!
+- aMeasure 
+	^self + aMeasure negated! !
 
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:54:24'!
 = aMeasure
@@ -78,6 +86,10 @@ compareWithNoAmount
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 19:04:40'!
 hash
 	^('{}-{}' format: {self class name, amount asString}) hash! !
+
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:48:31'!
+negated
+	^self class withAmount: self amount negated withRatio: self ratio! !
 
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 16:33:50'!
 ratio

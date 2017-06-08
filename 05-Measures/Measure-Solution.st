@@ -53,6 +53,20 @@ test11
 test12
 	self assert: MeasureFactory oneMeterAndOneDollar - MeasureFactory oneMeterAndOneGram = MeasureFactory zeroMetersMinusOneGramAndOneDollar! !
 
+!MeasureTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:08:37'!
+test13
+	self assert: MeasureFactory oneMeter * 2 = MeasureFactory twoMeters.
+	self assert: 2 * MeasureFactory oneMeter = MeasureFactory twoMeters.! !
+
+!MeasureTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:18:10'!
+test14
+	self assert: MeasureFactory fourMeters / 2 = MeasureFactory twoMeters.
+	self assert: MeasureFactory oneMeter/3 = MeasureFactory oneThirdMeter.! !
+
+!MeasureTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:43:08'!
+test15
+	self assert: (MeasureFactory oneMeter convertTo: UnitFactory centimeter) = MeasureFactory hundredCentimeters.! !
+
 
 !classDefinition: #Measure category: #'Measure-Solution'!
 Object subclass: #Measure
@@ -60,6 +74,10 @@ Object subclass: #Measure
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Measure-Solution'!
+
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:11:43'!
+* aScalar 
+	^self class withAmount: amount * aScalar withRatio: ratio! !
 
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/7/2017 23:54:48'!
 + anAdder
@@ -69,10 +87,18 @@ Object subclass: #Measure
 - aMeasure 
 	^self + aMeasure negated! !
 
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:19:34'!
+/ aScalar
+	^self class withAmount: (amount / aScalar) asFraction withRatio: 1! !
+
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:54:24'!
 = aMeasure
 	^(amount = 0 and: [^aMeasure compareWithNoAmount]) or: [(aMeasure isKindOf: self class ) and: [amount * ratio = (aMeasure amount * aMeasure ratio)]]
 	! !
+
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:12:58'!
+adaptToNumber: aScalar andSend: aSymbol 
+	^self perform: aSymbol with: aScalar! !
 
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/7/2017 23:54:33'!
 addMeasure: aMeasure 
@@ -91,6 +117,11 @@ amount
 compareWithNoAmount
 	^amount = 0! !
 
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:53:14'!
+convertTo: anUnit 
+	(anUnit measures: self class) ifFalse: [self error: 'Cant convert to unrelated unit'].
+	^self class withAmount: (amount * ratio / anUnit ratio) asFraction withRatio: anUnit ratio! !
+
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 19:04:40'!
 hash
 	^('{}-{}' format: {self class name, amount asString}) hash! !
@@ -102,6 +133,10 @@ negated
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 16:33:50'!
 ratio
 	^ratio! !
+
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:03:30'!
+removeFromMeasureGroup: aMeasureGroup
+	^aMeasureGroup addMeasure: self negated! !
 
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:12:01'!
 withAmount: anAmount withRatio: aRatio
@@ -167,6 +202,10 @@ Object subclass: #MeasureFactory
 MeasureFactory class
 	instanceVariableNames: ''!
 
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:18:31'!
+fourMeters
+	^Distance withAmount: 4 withRatio: 1! !
+
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:08:05'!
 hundredCentimeters
 	^Distance withAmount:100 withRatio:1/100! !
@@ -190,6 +229,10 @@ oneMeterAndOneDollar
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:08:39'!
 oneMeterAndOneGram
 	^MeasureGroup with: MeasureFactory oneMeter with: MeasureFactory oneGram! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:20:05'!
+oneThirdMeter
+	^Distance withAmount: 1/3 withRatio: 1! !
 
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:59:19'!
 twoMeters
@@ -231,13 +274,9 @@ Object subclass: #MeasureGroup
 + anAdder
 	^anAdder addToMeasureGroup: self! !
 
-!MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:58:51'!
+!MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:27:03'!
 - anAdder
-	(anAdder isKindOf: self class) ifTrue: [
-		anAdder contents do: [:aMeasure| self addMeasure: aMeasure negated].
-		^self
-	].
-	^self addMeasure: anAdder negated! !
+	^anAdder removeFromMeasureGroup: self.! !
 
 !MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 19:43:57'!
 = aMeasureGroup
@@ -264,6 +303,11 @@ contents
 initialize
 	contents := Dictionary new.! !
 
+!MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:02:35'!
+removeFromMeasureGroup: aMeasureGroup
+	self contents do: [:aMeasure | aMeasureGroup addMeasure: aMeasure negated].
+	^aMeasureGroup .! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'MeasureGroup class' category: #'Measure-Solution'!
@@ -286,3 +330,54 @@ with: aMeasure with: anotherMeasure with: yetAnotherMeasure
 	measureGroup + anotherMeasure.
 	measureGroup + yetAnotherMeasure.
 	^measureGroup! !
+
+
+!classDefinition: #Unit category: #'Measure-Solution'!
+Object subclass: #Unit
+	instanceVariableNames: 'unitName measure ratio'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Measure-Solution'!
+
+!Unit methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:53:58'!
+measures: aMeasureClass 
+	^measure = aMeasureClass ! !
+
+!Unit methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:54:12'!
+ratio
+	^ratio ! !
+
+!Unit methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:48:51'!
+withName: aString ofMeasure: aMeasureClass withRatio: ratioToBaseUnit 
+	unitName := aString.
+	measure := aMeasureClass.
+	ratio := ratioToBaseUnit.
+	^self.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Unit class' category: #'Measure-Solution'!
+Unit class
+	instanceVariableNames: ''!
+
+!Unit class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:47:28'!
+named: aString of: aMeasureClass withRatio: ratioToBaseUnit
+	^self new withName: aString ofMeasure: aMeasureClass withRatio: ratioToBaseUnit! !
+
+
+!classDefinition: #UnitFactory category: #'Measure-Solution'!
+Object subclass: #UnitFactory
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Measure-Solution'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'UnitFactory class' category: #'Measure-Solution'!
+UnitFactory class
+	instanceVariableNames: ''!
+
+!UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:44:33'!
+centimeter
+	^Unit named: 'centimeter' of:Distance withRatio: 1/100! !

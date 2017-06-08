@@ -37,6 +37,10 @@ test07
 test08
 	self assert: MeasureFactory oneMeter + MeasureFactory oneMeterAndOneDollar = MeasureFactory twoMetersAndOneDollar! !
 
+!MeasureTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:05:01'!
+test09
+	self assert: MeasureFactory oneMeterAndOneDollar + MeasureFactory oneMeterAndOneGram = MeasureFactory twoMetersOneDollarAndOneGram! !
+
 
 !classDefinition: #Measure category: #'Measure-Solution'!
 Object subclass: #Measure
@@ -118,6 +122,14 @@ withAmount: anAmount withRatio: aRatio
 	^self new withAmount: anAmount withRatio: aRatio! !
 
 
+!classDefinition: #Mass category: #'Measure-Solution'!
+Measure subclass: #Mass
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Measure-Solution'!
+
+
 !classDefinition: #MeasureFactory category: #'Measure-Solution'!
 Object subclass: #MeasureFactory
 	instanceVariableNames: ''
@@ -139,6 +151,10 @@ hundredCentimeters
 oneDollar
 	^Currency withAmount: 1 withRatio: 1! !
 
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:07:25'!
+oneGram
+	^Mass withAmount: 1 withRatio: 1! !
+
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:08:13'!
 oneMeter
 	^Distance withAmount:1 withRatio:1! !
@@ -147,6 +163,10 @@ oneMeter
 oneMeterAndOneDollar
 	^MeasureGroup with: self oneMeter with: self oneDollar! !
 
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:08:39'!
+oneMeterAndOneGram
+	^MeasureGroup with: MeasureFactory oneMeter with: MeasureFactory oneGram! !
+
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:59:19'!
 twoMeters
 	^Distance withAmount: 2 withRatio: 1.! !
@@ -154,6 +174,10 @@ twoMeters
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 19:22:47'!
 twoMetersAndOneDollar
 	^MeasureGroup with: self twoMeters with: self oneDollar! !
+
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:09:54'!
+twoMetersOneDollarAndOneGram
+	^MeasureGroup with: MeasureFactory twoMeters with: MeasureFactory oneDollar with: MeasureFactory oneGram! !
 
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:27:34'!
 zeroDollars
@@ -171,12 +195,16 @@ Object subclass: #MeasureGroup
 	poolDictionaries: ''
 	category: 'Measure-Solution'!
 
-!MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 20:04:22'!
-+ aMeasure
+!MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:22:48'!
++ anAdder
+	(anAdder isKindOf: self class) ifTrue: [
+		anAdder contents do: [:aMeasure | self addMeasure: aMeasure].
+		^self.
+	].
 	contents
-		at: aMeasure class name
-		ifPresent: [:existingMeasure | contents at: existingMeasure class name put: existingMeasure + aMeasure]
-		ifAbsent: [ contents at: aMeasure class name put: aMeasure ].
+		at: anAdder class name
+		ifPresent: [:existingMeasure | contents at: existingMeasure class name put: existingMeasure + anAdder]
+		ifAbsent: [ contents at: anAdder class name put: anAdder ].
 	^self.! !
 
 !MeasureGroup methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 19:43:57'!
@@ -208,3 +236,12 @@ with: aMeasure with: anotherMeasure
 	aMeasureGroup + aMeasure.
 	aMeasureGroup + anotherMeasure.
 	^aMeasureGroup! !
+
+!MeasureGroup class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:11:35'!
+with: aMeasure with: anotherMeasure with: yetAnotherMeasure
+	| measureGroup |
+	measureGroup := self new.
+	measureGroup + aMeasure.
+	measureGroup + anotherMeasure.
+	measureGroup + yetAnotherMeasure.
+	^measureGroup! !

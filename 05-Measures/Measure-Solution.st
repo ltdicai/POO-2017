@@ -70,14 +70,14 @@ test15
 
 !classDefinition: #Measure category: #'Measure-Solution'!
 Object subclass: #Measure
-	instanceVariableNames: 'amount ratio'
+	instanceVariableNames: 'amount unit'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Measure-Solution'!
 
-!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:11:43'!
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:06:05'!
 * aScalar 
-	^self class withAmount: amount * aScalar withRatio: ratio! !
+	^self class withAmount: amount * aScalar withUnit: unit! !
 
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/7/2017 23:54:48'!
 + anAdder
@@ -87,23 +87,25 @@ Object subclass: #Measure
 - aMeasure 
 	^self + aMeasure negated! !
 
-!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:19:34'!
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:06:47'!
 / aScalar
-	^self class withAmount: (amount / aScalar) asFraction withRatio: 1! !
+	^self class withAmount: (amount / aScalar) asFraction withUnit: unit! !
 
-!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:54:24'!
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:22:57'!
 = aMeasure
-	^(amount = 0 and: [^aMeasure compareWithNoAmount]) or: [(aMeasure isKindOf: self class ) and: [amount * ratio = (aMeasure amount * aMeasure ratio)]]
+	^(amount = 0 and: [^aMeasure compareWithNoAmount]) or: [(aMeasure isKindOf: self class ) and: [amount = (aMeasure convertTo: unit) amount]]
 	! !
 
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:12:58'!
 adaptToNumber: aScalar andSend: aSymbol 
 	^self perform: aSymbol with: aScalar! !
 
-!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/7/2017 23:54:33'!
-addMeasure: aMeasure 
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:10:35'!
+addMeasure: aMeasure
+	| convertedMeasure |
 	(aMeasure isKindOf: self class) ifFalse: [^MeasureGroup with: self with: aMeasure].
-	^aMeasure class withAmount: amount * ratio + (aMeasure amount * aMeasure ratio) withRatio: 1.! !
+	convertedMeasure := aMeasure convertTo: unit.
+	^aMeasure class withAmount: amount + convertedMeasure amount withUnit: unit.! !
 
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:35:55'!
 addToMeasureGroup: aMeasureGroup
@@ -117,18 +119,18 @@ amount
 compareWithNoAmount
 	^amount = 0! !
 
-!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:53:14'!
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:23:34'!
 convertTo: anUnit 
 	(anUnit measures: self class) ifFalse: [self error: 'Cant convert to unrelated unit'].
-	^self class withAmount: (amount * ratio / anUnit ratio) asFraction withRatio: anUnit ratio! !
+	^self class withAmount: (amount * unit ratio / anUnit ratio) asFraction withUnit: anUnit! !
 
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 19:04:40'!
 hash
 	^('{}-{}' format: {self class name, amount asString}) hash! !
 
-!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:48:31'!
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:11:07'!
 negated
-	^self class withAmount: self amount negated withRatio: self ratio! !
+	^self class withAmount: amount negated withUnit: unit! !
 
 !Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 16:33:50'!
 ratio
@@ -144,6 +146,12 @@ withAmount: anAmount withRatio: aRatio
 	ratio := aRatio.
 	^self! !
 
+!Measure methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:20:11'!
+withAmount: anAmount withUnit: anUnit 
+	amount := anAmount.
+	unit := anUnit.
+	^self! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'Measure class' category: #'Measure-Solution'!
@@ -153,6 +161,10 @@ Measure class
 !Measure class methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:13:25'!
 withAmount: anAmount withRatio: aRatio 
 	^self new withAmount: anAmount withRatio: aRatio! !
+
+!Measure class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:11:48'!
+withAmount: anAmount withUnit: anUnit
+	^self new withAmount: anAmount withUnit: anUnit! !
 
 
 !classDefinition: #Currency category: #'Measure-Solution'!
@@ -176,9 +188,9 @@ Measure subclass: #Distance
 Distance class
 	instanceVariableNames: ''!
 
-!Distance class methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 16:55:00'!
-withAmount: anAmount withRatio: aRatio 
-	^self new withAmount: anAmount withRatio: aRatio! !
+!Distance class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:05:37'!
+withAmount: anAmount withUnit: anUnit
+	^self new withAmount: anAmount withUnit: anUnit! !
 
 
 !classDefinition: #Mass category: #'Measure-Solution'!
@@ -202,25 +214,25 @@ Object subclass: #MeasureFactory
 MeasureFactory class
 	instanceVariableNames: ''!
 
-!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:18:31'!
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:13:16'!
 fourMeters
-	^Distance withAmount: 4 withRatio: 1! !
+	^Distance withAmount: 4 withUnit: UnitFactory meter! !
 
-!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:08:05'!
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:14:37'!
 hundredCentimeters
-	^Distance withAmount:100 withRatio:1/100! !
+	^Distance withAmount: 100 withUnit: UnitFactory centimeter! !
 
-!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:12:42'!
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:15:25'!
 oneDollar
-	^Currency withAmount: 1 withRatio: 1! !
+	^Currency withAmount: 1 withUnit: UnitFactory dollar! !
 
-!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:07:25'!
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:16:57'!
 oneGram
-	^Mass withAmount: 1 withRatio: 1! !
+	^Mass withAmount: 1 withUnit: UnitFactory gram! !
 
-!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:08:13'!
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:16:50'!
 oneMeter
-	^Distance withAmount:1 withRatio:1! !
+	^Distance withAmount: 1 withUnit: UnitFactory meter! !
 
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 19:18:51'!
 oneMeterAndOneDollar
@@ -230,13 +242,13 @@ oneMeterAndOneDollar
 oneMeterAndOneGram
 	^MeasureGroup with: MeasureFactory oneMeter with: MeasureFactory oneGram! !
 
-!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:20:05'!
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:16:43'!
 oneThirdMeter
-	^Distance withAmount: 1/3 withRatio: 1! !
+	^Distance withAmount: 1/3 withUnit: UnitFactory meter! !
 
-!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:59:19'!
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:17:11'!
 twoMeters
-	^Distance withAmount: 2 withRatio: 1.! !
+	^Distance withAmount: 2 withUnit: UnitFactory meter.! !
 
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 19:22:47'!
 twoMetersAndOneDollar
@@ -246,13 +258,13 @@ twoMetersAndOneDollar
 twoMetersOneDollarAndOneGram
 	^MeasureGroup with: MeasureFactory twoMeters with: MeasureFactory oneDollar with: MeasureFactory oneGram! !
 
-!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:27:34'!
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:17:28'!
 zeroDollars
-	^Currency withAmount: 0 withRatio: 1! !
+	^Currency withAmount: 0 withUnit: UnitFactory dollar! !
 
-!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/3/2017 17:26:26'!
+!MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:17:53'!
 zeroMeters
-	^Distance withAmount: 0 withRatio: 1.! !
+	^Distance withAmount: 0 withUnit: UnitFactory meter.! !
 
 !MeasureFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 00:55:17'!
 zeroMetersAndOneDollar
@@ -381,3 +393,15 @@ UnitFactory class
 !UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 01:44:33'!
 centimeter
 	^Unit named: 'centimeter' of:Distance withRatio: 1/100! !
+
+!UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:24:22'!
+dollar
+	^Unit named: 'dollar' of: Currency withRatio: 1! !
+
+!UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:25:19'!
+gram
+	^Unit named: 'gram' of: Mass withRatio: 1! !
+
+!UnitFactory class methodsFor: 'as yet unclassified' stamp: 'DIC 6/8/2017 02:19:22'!
+meter
+	^Unit named: 'meter' of: Distance withRatio: 1! !

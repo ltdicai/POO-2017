@@ -35,6 +35,30 @@ test06AddingSameItemsXTimesEqualsAddingItemWithQuantityX
 
 self assert: ((CartFactory newCart addItem: #item withQuantity: 1) addItem: #item withQuantity: 1) = (CartFactory newCart addItem: #item withQuantity:2)! !
 
+!CarritoTusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/13/2017 15:01:07'!
+test07CantAddNonPositiveQuantities
+
+self should: [
+		CartFactory  newCart addItem: #item withQuantity: 0
+	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [:anError|
+		self assert: anError messageText equals: Cart nonPositiveQuantity
+	].
+! !
+
+!CarritoTusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/13/2017 15:02:52'!
+test08CantAddNonIntegerQuantities
+
+self should: [
+		CartFactory newCart addItem: #item withQuantity: 3.1415
+	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [:anError|
+		self assert: anError messageText equals: Cart nonIntegerQuantity
+	].
+! !
+
 
 !classDefinition: #Cart category: #'TusLibros-Solution'!
 Object subclass: #Cart
@@ -43,8 +67,10 @@ Object subclass: #Cart
 	poolDictionaries: ''
 	category: 'TusLibros-Solution'!
 
-!Cart methodsFor: 'adding' stamp: 'DIC 6/10/2017 18:11:07'!
-addItem: anItem withQuantity: aInteger 
+!Cart methodsFor: 'adding' stamp: 'DIC 6/13/2017 15:03:50'!
+addItem: anItem withQuantity: aInteger
+	aInteger > 0 ifFalse: [self error: self class nonPositiveQuantity].
+	(aInteger isKindOf: Integer) ifFalse: [self error: self class nonIntegerQuantity].
 	contents add: anItem withOccurrences: aInteger.
 	^self! !
 
@@ -72,6 +98,20 @@ initialize
 !Cart methodsFor: 'accessing' stamp: 'DIC 6/10/2017 18:12:36'!
 contents
 	^contents! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Cart class' category: #'TusLibros-Solution'!
+Cart class
+	instanceVariableNames: ''!
+
+!Cart class methodsFor: 'errors' stamp: 'DIC 6/13/2017 15:04:41'!
+nonIntegerQuantity
+	^'Quantity must be an integer'! !
+
+!Cart class methodsFor: 'errors' stamp: 'DIC 6/13/2017 15:00:57'!
+nonPositiveQuantity
+	^'Quantity must be positive'! !
 
 
 !classDefinition: #CartFactory category: #'TusLibros-Solution'!

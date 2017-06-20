@@ -60,44 +60,129 @@ self should: [
 ! !
 
 
-!classDefinition: #Cart category: #'TusLibros-Solution'!
-Object subclass: #Cart
-	instanceVariableNames: 'empty contents'
+!classDefinition: #TusLibrosTest category: #'TusLibros-Solution'!
+TestCase subclass: #TusLibrosTest
+	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros-Solution'!
 
-!Cart methodsFor: 'adding' stamp: 'DIC 6/13/2017 15:03:50'!
-addItem: anItem withQuantity: aInteger
-	aInteger > 0 ifFalse: [self error: self class nonPositiveQuantity].
-	(aInteger isKindOf: Integer) ifFalse: [self error: self class nonIntegerQuantity].
-	contents add: anItem withOccurrences: aInteger.
-	^self! !
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:28:09'!
+test01CantAddBookNotFromPublisher
+| aCatalog aCart aBook |
+	aCatalog := Set new.
+	aBook := #book.
+	aCart := Cart withCatalog: aCatalog.
+	
+	self should: [aCart add: aBook]
+		raise: Error - MessageNotUnderstood
+		withExceptionDo: [:anError|
+			self assert: anError messageText equals: 'NO'.
+			self deny: (aCart includes: aBook)]! !
 
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:36:43'!
+test02AddedBookIsInCart
+| aCatalog aCart aBook |
+	aBook := #book.
+	aCatalog := Set with: aBook.
+	aCart := Cart withCatalog: aCatalog.
+	
+	aCart add: aBook. 
+	
+	self assert: (aCart includes: aBook)
+	! !
 
-!Cart methodsFor: 'comparing' stamp: 'DIC 6/10/2017 18:12:09'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:42:22'!
+test03AddingSameBookSeveralTimesIsEqualToAddingInQuantity
+| aCatalog aCart anotherCart aBook |
+	aBook := #book.
+	aCatalog := Set with: aBook.
+	aCart := Cart withCatalog: aCatalog.
+	anotherCart := Cart withCatalog: aCatalog.
+	
+	aCart add: aBook.
+	aCart add: aBook.
+	anotherCart add: aBook withQuantity: 2.
+	
+	self assert: aCart equals: anotherCart.
+	! !
+
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:52:51'!
+test04CantAddNonPositiveQuantity
+| aCatalog aCart aBook |
+	aBook := #book.
+	aCatalog := Set with: aBook.
+	aCart := Cart withCatalog: aCatalog.
+	
+	self should: [aCart add: aBook withQuantity: -1]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [:anError |
+			self assert: anError messageText equals: 'NO+'.
+			self assert: (aCart quantityOf: aBook) equals: 0]
+	
+	
+	
+	! !
+
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 21:53:34'!
+test05CantAddNonIntegerQuantity
+| aCatalog aCart aBook |
+	aBook := #book.
+	aCatalog := Set with: aBook.
+	aCart := Cart withCatalog: aCatalog.
+	
+	self should: [aCart add: aBook withQuantity: 3.1415]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [:anError |
+			self assert: anError messageText equals: 'NO/'.
+			self assert: (aCart quantityOf: aBook) equals: 0]
+	
+	
+	
+	! !
+
+
+!classDefinition: #Cart category: #'TusLibros-Solution'!
+Object subclass: #Cart
+	instanceVariableNames: 'catalog contents'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros-Solution'!
+
+!Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:45:47'!
 = aCart
 	^contents = aCart contents! !
 
+!Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:34:29'!
+add: aBook
+	(catalog includes: aBook) ifFalse: [self error: 'NO'].
+	
+	contents add: aBook.! !
 
-!Cart methodsFor: 'testing' stamp: 'DIC 6/10/2017 17:55:35'!
-contains: anItem
-	^contents includes: anItem ! !
+!Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 21:54:18'!
+add: aBook withQuantity: anInteger
+	anInteger > 0 ifFalse: [self error: 'NO+'].
+	(anInteger isKindOf: Integer) ifFalse: [self error: 'NO/']. 
+	contents add: aBook withOccurrences: anInteger.
+	^self! !
 
-!Cart methodsFor: 'testing' stamp: 'DIC 6/10/2017 17:54:45'!
-isEmpty
-	^contents isEmpty ! !
+!Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:46:04'!
+contents
+	^contents copy! !
 
+!Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:33:35'!
+includes: aBook
+	^contents includes: aBook! !
 
-!Cart methodsFor: 'initialization' stamp: 'DIC 6/10/2017 17:53:38'!
-initialize
+!Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:33:55'!
+initializeWithCatalog: aCatalog
+	catalog := aCatalog.
 	contents := Bag new.
 	^self! !
 
-
-!Cart methodsFor: 'accessing' stamp: 'DIC 6/10/2017 18:12:36'!
-contents
-	^contents! !
+!Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:56:01'!
+quantityOf: aBook
+	^contents occurrencesOf: aBook! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -105,28 +190,6 @@ contents
 Cart class
 	instanceVariableNames: ''!
 
-!Cart class methodsFor: 'errors' stamp: 'DIC 6/13/2017 15:04:41'!
-nonIntegerQuantity
-	^'Quantity must be an integer'! !
-
-!Cart class methodsFor: 'errors' stamp: 'DIC 6/13/2017 15:00:57'!
-nonPositiveQuantity
-	^'Quantity must be positive'! !
-
-
-!classDefinition: #CartFactory category: #'TusLibros-Solution'!
-Object subclass: #CartFactory
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'TusLibros-Solution'!
-
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-!classDefinition: 'CartFactory class' category: #'TusLibros-Solution'!
-CartFactory class
-	instanceVariableNames: ''!
-
-!CartFactory class methodsFor: 'creating' stamp: 'DIC 6/10/2017 16:14:18'!
-newCart
-	^Cart new! !
+!Cart class methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:28:41'!
+withCatalog: aCatalog
+	^self new initializeWithCatalog: aCatalog! !

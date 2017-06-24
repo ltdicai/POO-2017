@@ -187,9 +187,9 @@ test07CantCheckoutWithExpiredCreditCard
 	
 	! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/20/2017 01:05:59'!
-test08
-| aCatalog aCart aBook aCashier aCreditCard aBookCost|
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/22/2017 19:35:20'!
+test08SuccessfulCheckoutReturnsTotalValue
+	| aCatalog aCart aBook aCashier aCreditCard aBookCost |
 	aBook := #book.
 	aBookCost := 5.
 	aCatalog := Dictionary new.
@@ -213,9 +213,38 @@ Object subclass: #Cart
 	poolDictionaries: ''
 	category: 'TusLibros-Solution'!
 
-!Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:45:47'!
+!Cart methodsFor: 'adding' stamp: 'DIC 6/13/2017 15:03:50'!
+addItem: anItem withQuantity: aInteger
+	aInteger > 0 ifFalse: [self error: self class nonPositiveQuantity].
+	(aInteger isKindOf: Integer) ifFalse: [self error: self class nonIntegerQuantity].
+	contents add: anItem withOccurrences: aInteger.
+	^self! !
+
+
+!Cart methodsFor: 'comparing' stamp: 'DIC 6/19/2017 20:45:47'!
 = aCart
 	^contents = aCart contents! !
+
+
+!Cart methodsFor: 'testing' stamp: 'DIC 6/10/2017 17:55:35'!
+contains: anItem
+	^contents includes: anItem ! !
+
+!Cart methodsFor: 'testing' stamp: 'DIC 6/19/2017 23:41:17'!
+isEmpty
+	^contents isEmpty ! !
+
+
+!Cart methodsFor: 'initialization' stamp: 'DIC 6/10/2017 17:53:38'!
+initialize
+	contents := Bag new.
+	^self! !
+
+
+!Cart methodsFor: 'accessing' stamp: 'DIC 6/19/2017 20:46:04'!
+contents
+	^contents copy! !
+
 
 !Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 23:28:43'!
 add: aBook
@@ -230,10 +259,6 @@ add: aBook withQuantity: anInteger
 	contents add: aBook withOccurrences: anInteger.
 	^self! !
 
-!Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:46:04'!
-contents
-	^contents copy! !
-
 !Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:33:35'!
 includes: aBook
 	^contents includes: aBook! !
@@ -243,10 +268,6 @@ initializeWithCatalog: aCatalog
 	catalog := aCatalog.
 	contents := Bag new.
 	^self! !
-
-!Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 23:41:17'!
-isEmpty
-	^contents isEmpty ! !
 
 !Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:56:01'!
 quantityOf: aBook
@@ -265,6 +286,15 @@ totalAmount | totalAmount |
 !classDefinition: 'Cart class' category: #'TusLibros-Solution'!
 Cart class
 	instanceVariableNames: ''!
+
+!Cart class methodsFor: 'errors' stamp: 'DIC 6/13/2017 15:04:41'!
+nonIntegerQuantity
+	^'Quantity must be an integer'! !
+
+!Cart class methodsFor: 'errors' stamp: 'DIC 6/13/2017 15:00:57'!
+nonPositiveQuantity
+	^'Quantity must be positive'! !
+
 
 !Cart class methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:28:41'!
 withCatalog: aCatalog
@@ -288,6 +318,11 @@ checkout
 	self debitAmount: totalAmount withCreditCard: card.
 	
 	^totalAmount! !
+
+!Cashier methodsFor: 'as yet unclassified' stamp: 'DIC 6/17/2017 18:51:23'!
+checkoutCart: aShoppingCart withCard: aCreditCard 
+	aShoppingCart isEmpty ifTrue: [^self error: 'NOO'].
+	aCreditCard isExpired ifTrue: [^self error: 'EXPIRED']! !
 
 !Cashier methodsFor: 'as yet unclassified' stamp: 'DIC 6/20/2017 01:06:26'!
 debitAmount: anAmount withCreditCard: aCreditCard 
@@ -322,6 +357,10 @@ Object subclass: #CreditCard
 initializeWithExpireDate: aDate 
 	expireDate := aDate.
 	^self! !
+
+!CreditCard methodsFor: 'as yet unclassified' stamp: 'DIC 6/17/2017 18:49:13'!
+isExpired
+	^true! !
 
 !CreditCard methodsFor: 'as yet unclassified' stamp: 'DIC 6/20/2017 00:05:11'!
 isExpiredAt: aDate

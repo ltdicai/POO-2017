@@ -1,65 +1,3 @@
-!classDefinition: #CarritoTusLibrosTest category: #'TusLibros-Solution'!
-TestCase subclass: #CarritoTusLibrosTest
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'TusLibros-Solution'!
-
-!CarritoTusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/10/2017 16:13:35'!
-test01NewCartIsEmpty
-
-self assert: CartFactory newCart isEmpty! !
-
-!CarritoTusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/10/2017 18:58:11'!
-test02CartWithItemsIsNotEmpty
-
-self deny: (CartFactory newCart addItem:#item withQuantity: 1) isEmpty! !
-
-!CarritoTusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/10/2017 18:58:26'!
-test03WhenAddingItemCartContainsIt
-
-self assert: ((CartFactory newCart addItem: #item withQuantity:1) contains: #item)! !
-
-!CarritoTusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/10/2017 18:58:37'!
-test04NotAddedItemIsNotInCart
-
-self deny: ((CartFactory newCart addItem: #item withQuantity: 1) contains: #otheritem)! !
-
-!CarritoTusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/10/2017 18:58:56'!
-test05CartCanHaveMoreThanOneItem
-
-self assert: (((CartFactory newCart addItem: #item withQuantity: 1) addItem: #otherItem withQuantity: 1) contains: #item)! !
-
-!CarritoTusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/10/2017 18:59:16'!
-test06AddingSameItemsXTimesEqualsAddingItemWithQuantityX
-
-self assert: ((CartFactory newCart addItem: #item withQuantity: 1) addItem: #item withQuantity: 1) = (CartFactory newCart addItem: #item withQuantity:2)! !
-
-!CarritoTusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/13/2017 15:01:07'!
-test07CantAddNonPositiveQuantities
-
-self should: [
-		CartFactory  newCart addItem: #item withQuantity: 0
-	]
-	raise: Error - MessageNotUnderstood
-	withExceptionDo: [:anError|
-		self assert: anError messageText equals: Cart nonPositiveQuantity
-	].
-! !
-
-!CarritoTusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/13/2017 15:02:52'!
-test08CantAddNonIntegerQuantities
-
-self should: [
-		CartFactory newCart addItem: #item withQuantity: 3.1415
-	]
-	raise: Error - MessageNotUnderstood
-	withExceptionDo: [:anError|
-		self assert: anError messageText equals: Cart nonIntegerQuantity
-	].
-! !
-
-
 !classDefinition: #TusLibrosTest category: #'TusLibros-Solution'!
 TestCase subclass: #TusLibrosTest
 	instanceVariableNames: ''
@@ -147,27 +85,28 @@ test05CantAddNonIntegerQuantity
 	
 	! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/20/2017 00:23:26'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 18:57:14'!
 test06CantCheckoutWithEmptyCart
-| aCatalog aCart aCashier aCreditCard|
+| aCatalog aCart aCashier aCreditCard aSalesBook|
 	aCatalog := Set new.
 	aCart := Cart withCatalog: aCatalog.
 	aCreditCard := CreditCard withExpireDate: (Date year: 2017 month: 11 day: 1).
-	aCashier := Cashier withCart: aCart withCreditCard: aCreditCard atDate: (Date year: 2017 month: 5 day: 1).
+	aSalesBook := LinkedList new.
+	aCashier := Cashier withCart: aCart withCreditCard: aCreditCard atDate: (Date year: 2017 month: 5 day: 1) withSalesBook: aSalesBook.
 	
 	self should: [aCashier checkout]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError |
 			self assert: anError messageText equals: 'NO.Empty'.
-			"self assert: no se hizo registro la compra"]
+			self assert: aSalesBook isEmpty]
 	
 	
 	
 	! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/20/2017 01:10:59'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 18:57:35'!
 test07CantCheckoutWithExpiredCreditCard
-| aCatalog aCart aBook aBookCost aCashier anExpiredCreditCard|
+| aCatalog aCart aBook aBookCost aCashier anExpiredCreditCard aSalesBook|
 	aBook := #book.
 	aBookCost := 5.
 	aCatalog := Dictionary new.
@@ -175,21 +114,22 @@ test07CantCheckoutWithExpiredCreditCard
 	aCart := Cart withCatalog: aCatalog.
 	anExpiredCreditCard := CreditCard withExpireDate: (Date year: 2017 month: 5 day: 1).
 	aCart add: aBook.
-	aCashier := Cashier withCart: aCart withCreditCard: anExpiredCreditCard atDate: (Date year: 2017 month: 8 day: 1).
+	aSalesBook := LinkedList new.
+	aCashier := Cashier withCart: aCart withCreditCard: anExpiredCreditCard atDate: (Date year: 2017 month: 8 day: 1) withSalesBook: aSalesBook.
 	
 	self should: [aCashier checkout]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError |
 			self assert: anError messageText equals: 'NO.Expired'.
-			"self assert: no se hizo registro la compra"]
+			self assert: aSalesBook isEmpty]
 	
 	
 	
 	! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/22/2017 19:35:20'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 18:50:15'!
 test08SuccessfulCheckoutReturnsTotalValue
-	| aCatalog aCart aBook aCashier aCreditCard aBookCost |
+	| aCatalog aCart aBook aCashier aCreditCard aBookCost aSalesBook checkoutAmount |
 	aBook := #book.
 	aBookCost := 5.
 	aCatalog := Dictionary new.
@@ -197,9 +137,13 @@ test08SuccessfulCheckoutReturnsTotalValue
 	aCart := Cart withCatalog: aCatalog.
 	aCreditCard := CreditCard withExpireDate: (Date year: 2017 month: 11 day: 1).
 	aCart add: aBook.
-	aCashier := Cashier withCart: aCart withCreditCard: aCreditCard atDate: (Date year: 2017 month: 5 day: 1) .
+	aSalesBook := LinkedList new.
+	aCashier := Cashier withCart: aCart withCreditCard: aCreditCard atDate: (Date year: 2017 month: 5 day: 1) withSalesBook: aSalesBook.
 	
-	self assert: aCashier checkout equals: aBookCost
+	checkoutAmount := aCashier checkout.
+	
+	self assert: checkoutAmount equals: aBookCost.
+	self assert: aSalesBook last = checkoutAmount. 
 	
 	
 	
@@ -303,12 +247,12 @@ withCatalog: aCatalog
 
 !classDefinition: #Cashier category: #'TusLibros-Solution'!
 Object subclass: #Cashier
-	instanceVariableNames: 'cart card currentDate'
+	instanceVariableNames: 'cart card currentDate salesBook'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros-Solution'!
 
-!Cashier methodsFor: 'as yet unclassified' stamp: 'DIC 6/20/2017 00:18:47'!
+!Cashier methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 18:54:28'!
 checkout
 	| totalAmount |
 	cart isEmpty ifTrue: [self error: 'NO.Empty'].
@@ -316,23 +260,20 @@ checkout
 	
 	totalAmount := cart totalAmount.
 	self debitAmount: totalAmount withCreditCard: card.
+	salesBook addLast: totalAmount.
 	
 	^totalAmount! !
-
-!Cashier methodsFor: 'as yet unclassified' stamp: 'DIC 6/17/2017 18:51:23'!
-checkoutCart: aShoppingCart withCard: aCreditCard 
-	aShoppingCart isEmpty ifTrue: [^self error: 'NOO'].
-	aCreditCard isExpired ifTrue: [^self error: 'EXPIRED']! !
 
 !Cashier methodsFor: 'as yet unclassified' stamp: 'DIC 6/20/2017 01:06:26'!
 debitAmount: anAmount withCreditCard: aCreditCard 
 	^self! !
 
-!Cashier methodsFor: 'as yet unclassified' stamp: 'DIC 6/20/2017 00:20:51'!
-initializeWithCart: aCart withCreditCard: aCreditCard atDate: aDate
+!Cashier methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 18:52:54'!
+initializeWithCart: aCart withCreditCard: aCreditCard atDate: aDate withSalesBook: aSalesBook
 	cart := aCart.
 	card := aCreditCard.
 	currentDate := aDate.
+	salesBook := aSalesBook.
 	^self! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -341,9 +282,9 @@ initializeWithCart: aCart withCreditCard: aCreditCard atDate: aDate
 Cashier class
 	instanceVariableNames: ''!
 
-!Cashier class methodsFor: 'as yet unclassified' stamp: 'DIC 6/20/2017 00:22:10'!
-withCart: aCart withCreditCard: aCreditCard atDate: aDate
-	^self new initializeWithCart: aCart withCreditCard: aCreditCard atDate: aDate! !
+!Cashier class methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 18:52:39'!
+withCart: aCart withCreditCard: aCreditCard atDate: aDate withSalesBook: aSalesBook.
+	^self new initializeWithCart: aCart withCreditCard: aCreditCard atDate: aDate withSalesBook: aSalesBook.! !
 
 
 !classDefinition: #CreditCard category: #'TusLibros-Solution'!
@@ -357,10 +298,6 @@ Object subclass: #CreditCard
 initializeWithExpireDate: aDate 
 	expireDate := aDate.
 	^self! !
-
-!CreditCard methodsFor: 'as yet unclassified' stamp: 'DIC 6/17/2017 18:49:13'!
-isExpired
-	^true! !
 
 !CreditCard methodsFor: 'as yet unclassified' stamp: 'DIC 6/20/2017 00:05:11'!
 isExpiredAt: aDate

@@ -5,12 +5,12 @@ TestCase subclass: #TusLibrosTest
 	poolDictionaries: ''
 	category: 'TusLibros-Solution'!
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/20/2017 01:06:44'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 23:48:03'!
 test01CantAddBookNotFromPublisher
 | aCatalog aCart aBook |
 	aCatalog := Dictionary new.
 	aBook := #book.
-	aCart := Cart withCatalog: aCatalog.
+	aCart := Cart withCatalog: aCatalog createdAt: (DateAndTime year: 2017 month: 6 day: 1  hour: 2 minute: 0).
 	
 	self should: [aCart add: aBook]
 		raise: Error - MessageNotUnderstood
@@ -18,29 +18,29 @@ test01CantAddBookNotFromPublisher
 			self assert: anError messageText equals: 'NO'.
 			self deny: (aCart includes: aBook)]! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/20/2017 01:10:14'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 23:48:20'!
 test02AddedBookIsInCart
 | aCatalog aCart aBook aBookCost|
 	aBook := #book.
 	aBookCost := 5.
 	aCatalog := Dictionary new.
 	aCatalog at: aBook put: aBookCost.
-	aCart := Cart withCatalog: aCatalog.
+	aCart := Cart withCatalog: aCatalog createdAt: (DateAndTime year: 2017 month: 6 day: 1  hour: 2 minute: 0).
 	
 	aCart add: aBook. 
 	
 	self assert: (aCart includes: aBook)
 	! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/20/2017 01:10:39'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 23:48:44'!
 test03AddingSameBookSeveralTimesIsEqualToAddingInQuantity
 | aCatalog aCart anotherCart aBook aBookCost|
 	aBook := #book.
 	aBookCost := 5.
 	aCatalog := Dictionary new.
 	aCatalog at: aBook put: aBookCost.
-	aCart := Cart withCatalog: aCatalog.
-	anotherCart := Cart withCatalog: aCatalog.
+	aCart := Cart withCatalog: aCatalog createdAt: (DateAndTime year: 2017 month: 6 day: 1  hour: 2 minute: 0).
+	anotherCart := Cart withCatalog: aCatalog createdAt: (DateAndTime year: 2017 month: 6 day: 1  hour: 2 minute: 0).
 	
 	aCart add: aBook.
 	aCart add: aBook.
@@ -49,12 +49,12 @@ test03AddingSameBookSeveralTimesIsEqualToAddingInQuantity
 	self assert: aCart equals: anotherCart.
 	! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:52:51'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 23:48:54'!
 test04CantAddNonPositiveQuantity
 | aCatalog aCart aBook |
 	aBook := #book.
 	aCatalog := Set with: aBook.
-	aCart := Cart withCatalog: aCatalog.
+	aCart := Cart withCatalog: aCatalog createdAt: (DateAndTime year: 2017 month: 6 day: 1  hour: 2 minute: 0).
 	
 	self should: [aCart add: aBook withQuantity: -1]
 		raise: Error - MessageNotUnderstood 
@@ -66,14 +66,14 @@ test04CantAddNonPositiveQuantity
 	
 	! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/20/2017 01:11:12'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 23:49:04'!
 test05CantAddNonIntegerQuantity
 | aCatalog aCart aBook aBookCost|
 	aBook := #book.
 	aBookCost := 5.
 	aCatalog := Dictionary new.
 	aCatalog at: aBook put: aBookCost.
-	aCart := Cart withCatalog: aCatalog.
+	aCart := Cart withCatalog: aCatalog createdAt: (DateAndTime year: 2017 month: 6 day: 1  hour: 2 minute: 0).
 	
 	self should: [aCart add: aBook withQuantity: 3.1415]
 		raise: Error - MessageNotUnderstood 
@@ -85,14 +85,14 @@ test05CantAddNonIntegerQuantity
 	
 	! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 19:28:16'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:20:02'!
 test06CantCheckoutWithEmptyCart
 | aCatalog aCart aCashier aCreditCard aSalesBook aMerchantProcessor |
 	aCatalog := Set new.
-	aCart := Cart withCatalog: aCatalog.
+	aCart := Cart withCatalog: aCatalog createdAt: (DateAndTime year: 2017 month: 5 day: 1  hour: 2 minute: 0).
 	aCreditCard := CreditCard withExpireDate: (Date year: 2017 month: 11 day: 1).
 	aSalesBook := LinkedList new.
-	aCashier := Cashier withCart: aCart withCreditCard: aCreditCard atDate: (Date year: 2017 month: 5 day: 1) withSalesBook: aSalesBook.
+	aCashier := Cashier withCart: aCart withCreditCard: aCreditCard atDate: (DateAndTime year: 2017 month: 5 day: 1  hour: 2 minute: 10) withSalesBook: aSalesBook.
 	aMerchantProcessor := MerchantProcessor withSaleDo: [:anAmount :aCard | ^self].
 	
 	self should: [aCashier checkout: aMerchantProcessor]
@@ -105,18 +105,18 @@ test06CantCheckoutWithEmptyCart
 	
 	! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 19:28:34'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:22:49'!
 test07CantCheckoutWithExpiredCreditCard
 | aCatalog aCart aBook aBookCost aCashier anExpiredCreditCard aSalesBook aMerchantProcessor |
 	aBook := #book.
 	aBookCost := 5.
 	aCatalog := Dictionary new.
 	aCatalog at: aBook put: aBookCost.
-	aCart := Cart withCatalog: aCatalog.
-	anExpiredCreditCard := CreditCard withExpireDate: (Date year: 2017 month: 5 day: 1).
+	aCart := Cart withCatalog: aCatalog createdAt: (DateAndTime year: 2017 month: 6 day: 1  hour: 2 minute: 0).
+	anExpiredCreditCard := CreditCard withExpireDate: (DateAndTime year: 2017 month: 5 day: 1).
 	aCart add: aBook.
 	aSalesBook := LinkedList new.
-	aCashier := Cashier withCart: aCart withCreditCard: anExpiredCreditCard atDate: (Date year: 2017 month: 8 day: 1) withSalesBook: aSalesBook.
+	aCashier := Cashier withCart: aCart withCreditCard: anExpiredCreditCard atDate: (DateAndTime year: 2017 month: 6 day: 1  hour: 2 minute: 10) withSalesBook: aSalesBook.
 	aMerchantProcessor := MerchantProcessor withSaleDo: [:anAmount :aCard | ^self].
 	
 	self should: [aCashier checkout: aMerchantProcessor]
@@ -129,19 +129,19 @@ test07CantCheckoutWithExpiredCreditCard
 	
 	! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 19:25:38'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:23:34'!
 test08SuccessfulCheckoutReturnsTotalValue
 	| aCatalog aCart aBook aCashier aCreditCard aBookCost aSalesBook checkoutAmount aMerchantProcessor |
 	aBook := #book.
 	aBookCost := 5.
 	aCatalog := Dictionary new.
 	aCatalog at: aBook put: aBookCost.
-	aCart := Cart withCatalog: aCatalog.
-	aCreditCard := CreditCard withExpireDate: (Date year: 2017 month: 11 day: 1).
+	aCart := Cart withCatalog: aCatalog createdAt: (DateAndTime year: 2017 month: 4 day: 1  hour: 2 minute: 0).
+	aCreditCard := CreditCard withExpireDate: (DateAndTime year: 2017 month: 11 day: 1).
 	aCart add: aBook.
 	aSalesBook := LinkedList new.
 	aMerchantProcessor := MerchantProcessor withSaleDo: [:anAmount :aCard | ^self].
-	aCashier := Cashier withCart: aCart withCreditCard: aCreditCard atDate: (Date year: 2017 month: 5 day: 1) withSalesBook: aSalesBook.
+	aCashier := Cashier withCart: aCart withCreditCard: aCreditCard atDate: (DateAndTime year: 2017 month: 4 day: 1  hour: 2 minute: 0) withSalesBook: aSalesBook.
 	
 	checkoutAmount := aCashier checkout: aMerchantProcessor .
 	
@@ -151,18 +151,18 @@ test08SuccessfulCheckoutReturnsTotalValue
 	
 	! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 19:26:39'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:24:04'!
 test09SuccessfulCheckoutRecordsLastSale
 	| aCatalog aCart aBook aCashier aCreditCard aBookCost aSalesBook checkoutAmount aMerchantProcessor |
 	aBook := #book.
 	aBookCost := 5.
 	aCatalog := Dictionary new.
 	aCatalog at: aBook put: aBookCost.
-	aCart := Cart withCatalog: aCatalog.
-	aCreditCard := CreditCard withExpireDate: (Date year: 2017 month: 11 day: 1).
+	aCart := Cart withCatalog: aCatalog createdAt: (DateAndTime year: 2017 month: 5 day: 1  hour: 2 minute: 0).
+	aCreditCard := CreditCard withExpireDate: (DateAndTime year: 2017 month: 11 day: 1).
 	aCart add: aBook.
 	aSalesBook := LinkedList new.
-	aCashier := Cashier withCart: aCart withCreditCard: aCreditCard atDate: (Date year: 2017 month: 5 day: 1) withSalesBook: aSalesBook.
+	aCashier := Cashier withCart: aCart withCreditCard: aCreditCard atDate: (DateAndTime year: 2017 month: 5 day: 1  hour: 2 minute: 0) withSalesBook: aSalesBook.
 	aMerchantProcessor := MerchantProcessor withSaleDo: [:anAmount :aCard | ^self].
 	checkoutAmount := aCashier checkout: aMerchantProcessor.
 	
@@ -172,19 +172,19 @@ test09SuccessfulCheckoutRecordsLastSale
 	
 	! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 19:24:01'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:24:33'!
 test10CantCheckoutWithStolenCreditCard
 	| aCatalog aCart aBook aCashier aCreditCard aBookCost aSalesBook aMerchantProcessor |
 	aBook := #book.
 	aBookCost := 5.
 	aCatalog := Dictionary new.
 	aCatalog at: aBook put: aBookCost.
-	aCart := Cart withCatalog: aCatalog.
-	aCreditCard := CreditCard withExpireDate: (Date year: 2017 month: 11 day: 1).
+	aCart := Cart withCatalog: aCatalog createdAt: (DateAndTime year: 2017 month: 5 day: 1  hour: 2 minute: 0).
+	aCreditCard := CreditCard withExpireDate: (DateAndTime year: 2017 month: 11 day: 1).
 	aCart add: aBook.
 	aSalesBook := LinkedList new.
 	aMerchantProcessor := MerchantProcessor withSaleDo: [:anAmount :aCard | ^self error: 'NO.Stolen'].
-	aCashier := Cashier withCart: aCart withCreditCard: aCreditCard atDate: (Date year: 2017 month: 5 day: 1) withSalesBook: aSalesBook.
+	aCashier := Cashier withCart: aCart withCreditCard: aCreditCard atDate: (DateAndTime year: 2017 month: 5 day: 1  hour: 2 minute: 0) withSalesBook: aSalesBook.
 	
 	self should: [aCashier checkout: aMerchantProcessor]
 		raise: Error - MessageNotUnderstood 
@@ -197,19 +197,19 @@ test10CantCheckoutWithStolenCreditCard
 	
 	! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 19:32:59'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:25:50'!
 test11CantCheckoutWithInsufficientAmount
 	| aCatalog aCart aBook aCashier aCreditCard aBookCost aSalesBook aMerchantProcessor |
 	aBook := #book.
 	aBookCost := 5.
 	aCatalog := Dictionary new.
 	aCatalog at: aBook put: aBookCost.
-	aCart := Cart withCatalog: aCatalog.
-	aCreditCard := CreditCard withExpireDate: (Date year: 2017 month: 11 day: 1).
+	aCart := Cart withCatalog: aCatalog createdAt: (DateAndTime year: 2017 month: 5 day: 1  hour: 2 minute: 0).
+	aCreditCard := CreditCard withExpireDate: (DateAndTime year: 2017 month: 11 day: 1).
 	aCart add: aBook.
 	aSalesBook := LinkedList new.
 	aMerchantProcessor := MerchantProcessor withSaleDo: [:anAmount :aCard | ^self error: 'NO.Insufficient'].
-	aCashier := Cashier withCart: aCart withCreditCard: aCreditCard atDate: (Date year: 2017 month: 5 day: 1) withSalesBook: aSalesBook.
+	aCashier := Cashier withCart: aCart withCreditCard: aCreditCard atDate: (DateAndTime year: 2017 month: 5 day: 1  hour: 2 minute: 0) withSalesBook: aSalesBook.
 	
 	self should: [aCashier checkout: aMerchantProcessor]
 		raise: Error - MessageNotUnderstood 
@@ -222,7 +222,7 @@ test11CantCheckoutWithInsufficientAmount
 	
 	! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 20:52:05'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:29:44'!
 test12CantCreateCartForNotExistingClient
 	| anInterface aClientId aDictionaryOfCarts aPassword aCatalog |
 	aDictionaryOfCarts := Dictionary new.
@@ -231,13 +231,13 @@ test12CantCreateCartForNotExistingClient
 	aClientId := 1.
 	aPassword := 'password'.
 	
-	self should: [anInterface createCartWithClientId: aClientId withPassword: aPassword]
+	self should: [anInterface createCartWithClientId: aClientId withPassword: aPassword atDateTime: (DateAndTime year: 2017 month: 5 day: 1 hour: 2 minute: 0 )]
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [:anError | 
 			self assert: anError messageText equals: 'No user'.
 			self deny: (aDictionaryOfCarts includesKey: aClientId)]! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 20:51:41'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:31:49'!
 test13CantCreateCartForClientWithWrongPassword
 	| anInterface aClientId aDictionaryOfCarts aPassword anUserCollection anotherPassword aCatalog |
 	aDictionaryOfCarts := Dictionary new.
@@ -249,15 +249,15 @@ test13CantCreateCartForClientWithWrongPassword
 	aCatalog := Dictionary new.
 	anInterface := TusLibrosInterface withUsers: anUserCollection withCarts: aDictionaryOfCarts withCatalog: aCatalog.
 	
-	self should: [anInterface createCartWithClientId: aClientId withPassword: anotherPassword]
+	self should: [anInterface createCartWithClientId: aClientId withPassword: anotherPassword atDateTime: (DateAndTime year: 2017 month: 5 day: 1 hour: 2 minute: 0 )]
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [:anError | 
 			self assert: anError messageText equals: 'No password'.
 			self deny: (aDictionaryOfCarts includesKey: aClientId)]! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 20:53:11'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:32:03'!
 test14NewCartIsAssociatedWithClientId
-	| anInterface aClientId aClientIdCartsMapping aPassword anUserCollection aCart aCatalog |
+	| anInterface aClientId aClientIdCartsMapping aPassword anUserCollection aCatalog aCartId |
 	aClientIdCartsMapping := Dictionary new.
 	aClientId := 1.
 	aPassword := 'password'.
@@ -266,9 +266,9 @@ test14NewCartIsAssociatedWithClientId
 	aCatalog := Dictionary new.
 	anInterface := TusLibrosInterface withUsers: anUserCollection withCarts: aClientIdCartsMapping withCatalog: aCatalog.
 	
-	aCart := anInterface createCartWithClientId: aClientId withPassword: aPassword.
+	aCartId := anInterface createCartWithClientId: aClientId withPassword: aPassword atDateTime: (DateAndTime year: 2017 month: 5 day: 1 hour: 2 minute: 0 ).
 	
-	self assert: ((aClientIdCartsMapping at: aClientId) includes: aCart).
+	self assert: ((aClientIdCartsMapping at: aClientId) includes: aCartId).
 	! !
 
 !TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 20:53:45'!
@@ -294,10 +294,152 @@ test15CantAddBooksToNonExistingCart
 	
 	! !
 
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:32:13'!
+test16AddedBookIsIncludedInCartList
+	| anInterface aClientId aClientIdCartsMapping aPassword anUserCollection aCartId aBook aQuantity aBookCost aCatalog |
+	aClientIdCartsMapping := Dictionary new.
+	aClientId := 1.
+	aPassword := 'password'.
+	anUserCollection := Dictionary new.
+	anUserCollection at: aClientId put: aPassword.
+	aBook := #ISBN000.
+	aQuantity := 2.
+	aBookCost := 5.
+	aCatalog := Dictionary new.
+	aCatalog at: aBook put: aBookCost.
+	anInterface := TusLibrosInterface withUsers: anUserCollection withCarts: aClientIdCartsMapping withCatalog: aCatalog.
+	
+	aCartId := anInterface createCartWithClientId: aClientId withPassword: aPassword atDateTime: (DateAndTime year: 2017 month: 5 day: 1 hour: 2 minute: 0 ).
+	anInterface addToCart: aCartId thisBook: aBook withQuantity: aQuantity.
+	
+	self assert: ((anInterface listCart: aCartId) occurrencesOf: aBook) equals: aQuantity 
+	
+	! !
+
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 22:25:22'!
+test17CantListCartOfNonExistingCart
+	| anInterface aClientId aClientIdCartsMapping aPassword anUserCollection aCartId aCatalog |
+	aClientIdCartsMapping := Dictionary new.
+	aClientId := 1.
+	aPassword := 'password'.
+	anUserCollection := Dictionary new.
+	anUserCollection at: aClientId put: aPassword.
+	aCartId := 42.
+	aCatalog := Dictionary new.
+	anInterface := TusLibrosInterface withUsers: anUserCollection withCarts: aClientIdCartsMapping withCatalog: aCatalog.
+	
+	self should: [anInterface listCart: aCartId]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [:anError |
+			self assert: anError messageText equals: 'No cart'].
+	
+	
+
+	
+	! !
+
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:26:53'!
+test18CantCheckoutNonExistingCart
+	| anInterface aClientId aClientIdCartsMapping aPassword anUserCollection aCartId aCatalog aCreditCard|
+	aClientIdCartsMapping := Dictionary new.
+	aClientId := 1.
+	aPassword := 'password'.
+	anUserCollection := Dictionary new.
+	anUserCollection at: aClientId put: aPassword.
+	aCartId := 42.
+	aCatalog := Dictionary new.
+	aCreditCard := CreditCard withExpireDate: (DateAndTime year: 2017 month:11  day:1).
+	anInterface := TusLibrosInterface withUsers: anUserCollection withCarts: aClientIdCartsMapping withCatalog: aCatalog.
+	
+	self should: [anInterface checkOutCart: aCartId withCreditCard: aCreditCard atDate: (DateAndTime year: 2017 month:5  day:1)]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [:anError |
+			self assert: anError messageText equals: 'No cart']
+	
+	
+
+	
+	! !
+
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:32:25'!
+test19SuccessfulCheckoutRecordPurchase
+	| anInterface aClientId aClientIdCartsMapping aPassword anUserCollection aCartId aCatalog aCreditCard aBook aBookCost aQuantity aBagOfBooks aListOfPurchases |
+	aClientIdCartsMapping := Dictionary new.
+	aClientId := 1.
+	aPassword := 'password'.
+	anUserCollection := Dictionary new.
+	anUserCollection at: aClientId put: aPassword.
+	aBook := #ISBN000.
+	aBookCost := 5.
+	aQuantity := 2.
+	aCatalog := Dictionary new.
+	aCatalog at: aBook put: aBookCost.
+	aCreditCard := CreditCard withExpireDate: (DateAndTime year: 2017 month: 11  day: 1).
+	anInterface := TusLibrosInterface withUsers: anUserCollection withCarts: aClientIdCartsMapping withCatalog: aCatalog.
+	aListOfPurchases := Dictionary new.
+	aBagOfBooks := Bag new.
+	aBagOfBooks add: aBook withOccurrences: aQuantity.
+	aListOfPurchases at: 'purchases' put: aBagOfBooks.
+	aListOfPurchases at: 'total_amount' put: 10.
+	
+	aCartId := anInterface createCartWithClientId: aClientId withPassword: aPassword atDateTime: (DateAndTime year: 2017 month: 5 day: 1 hour: 2 minute: 0 ).
+	anInterface addToCart: aCartId thisBook: aBook withQuantity: aQuantity.
+	anInterface checkOutCart: aCartId withCreditCard: aCreditCard atDate: (DateAndTime year: 2017 month: 5  day: 1).	
+	
+	"self assert: (anInterface listPurchasesWithClientId: aClientId withPassword: aPassword) equals: aListOfPurchases."
+	
+	
+
+	
+	! !
+
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 23:27:49'!
+test20CantListPurchasesForNonExistingClientId
+	| anInterface aClientId aClientIdCartsMapping aPassword anUserCollection aCatalog |
+	aClientIdCartsMapping := Dictionary new.
+	aClientId := 1.
+	aPassword := 'password'.
+	anUserCollection := Dictionary new.
+	aCatalog := Dictionary new.
+	
+	anInterface := TusLibrosInterface withUsers: anUserCollection withCarts: aClientIdCartsMapping withCatalog: aCatalog.
+	
+	self should: [anInterface listPurchasesWithClientId: aClientId withPassword: aPassword]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [:anError |
+			self assert: anError messageText equals: 'No user']
+	
+	
+	
+
+	
+	! !
+
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:05:39'!
+test21CantCreateCashierWithExpiredCart
+	| aCatalog aCart aCreditCard aSalesBook aMoment aMoment40MinutesLater |
+	aCatalog := Dictionary new.
+	aMoment := DateAndTime year: 2017 month: 6 day: 1  hour: 2 minute: 0.
+	aMoment40MinutesLater := aMoment + (Duration minutes: 40).
+	aCart := Cart withCatalog: aCatalog createdAt: aMoment.
+	aCreditCard := CreditCard withExpireDate: (Date year: 2017 month: 11 day: 1).
+	aSalesBook := LinkedList new.
+	
+	self should: [Cashier withCart: aCart withCreditCard: aCreditCard atDate: aMoment40MinutesLater withSalesBook: aSalesBook.]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [:anError |
+			self assert: anError messageText equals: 'Expired cart']
+	
+
+	
+
+	
+	! !
+
 
 !classDefinition: #Cart category: #'TusLibros-Solution'!
 Object subclass: #Cart
-	instanceVariableNames: 'catalog contents'
+	instanceVariableNames: 'catalog contents createdAt'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros-Solution'!
@@ -332,6 +474,10 @@ add: aBook withQuantity: anInteger
 	contents add: aBook withOccurrences: anInteger.
 	^self! !
 
+!Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:10:17'!
+createdAt
+	^createdAt copy! !
+
 !Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:33:35'!
 includes: aBook
 	^contents includes: aBook! !
@@ -339,6 +485,13 @@ includes: aBook
 !Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:33:55'!
 initializeWithCatalog: aCatalog
 	catalog := aCatalog.
+	contents := Bag new.
+	^self! !
+
+!Cart methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 23:45:41'!
+initializeWithCatalog: aCatalog createdAt: aDateTime
+	catalog := aCatalog.
+	createdAt := aDateTime.
 	contents := Bag new.
 	^self! !
 
@@ -372,6 +525,10 @@ nonPositiveQuantity
 !Cart class methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 20:28:41'!
 withCatalog: aCatalog
 	^self new initializeWithCatalog: aCatalog! !
+
+!Cart class methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 23:45:08'!
+withCatalog: aCatalog createdAt: aDateTime
+	^self new initializeWithCatalog: aCatalog createdAt: aDateTime! !
 
 
 !classDefinition: #Cashier category: #'TusLibros-Solution'!
@@ -423,8 +580,10 @@ initializeWithCart: aCart withCreditCard: aCreditCard atDate: aDate withSalesBoo
 Cashier class
 	instanceVariableNames: ''!
 
-!Cashier class methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 18:52:39'!
+!Cashier class methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:17:22'!
 withCart: aCart withCreditCard: aCreditCard atDate: aDate withSalesBook: aSalesBook.
+	aCart createdAt + (Duration minutes: 30) > aDate ifFalse: [^self error: 'Expired cart'].
+	
 	^self new initializeWithCart: aCart withCreditCard: aCreditCard atDate: aDate withSalesBook: aSalesBook.! !
 
 
@@ -485,33 +644,83 @@ withSaleDo: aMethod
 
 !classDefinition: #TusLibrosInterface category: #'TusLibros-Solution'!
 Object subclass: #TusLibrosInterface
-	instanceVariableNames: 'users carts catalog cartMapping'
+	instanceVariableNames: 'users carts catalog cartMapping lastCartId purchasesMapping salesBook'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros-Solution'!
 
-!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 20:56:50'!
+!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 22:17:04'!
 addToCart: aCartId thisBook: aBook withQuantity: aQuantity 
-	cartMapping at: aCartId ifAbsent: [^self error: 'No cart']! !
+	| cart |
+	cart := cartMapping at: aCartId ifAbsent: [^self error: 'No cart'].
+	cart add: aBook withQuantity: aQuantity.
+	^self
+	
+	! !
 
-!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 20:36:04'!
-createCartWithClientId: aClientId withPassword: aPassword 
-	| password newCart |
+!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 01:01:17'!
+checkOutCart: aCartId withCreditCard: aCreditCard atDate: aDateTime
+	|aCart aCashier aClientId totalAmount|
+	aCart := cartMapping at: aCartId ifAbsent: [^self error: 'No cart'].
+	
+	aCashier := Cashier withCart: aCart withCreditCard: aCreditCard atDate: aDateTime withSalesBook: salesBook.
+	
+	totalAmount := aCashier checkout: (MerchantProcessor withSaleDo: [:anAmount :aCard | self]).
+	
+	carts keysAndValuesDo: [:clientId :cartIds | (cartIds includes: aCartId) ifTrue: [aClientId := clientId]].
+	
+	(carts at: aClientId) remove: aCartId.
+	"result := (purchases at:aClientId ifAbsentPut: Dictionary new) 
+	
+	result addAll: aCart contents."
+	
+	! !
+
+!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:30:51'!
+createCartWithClientId: aClientId withPassword: aPassword atDateTime: aDateAndTime 
+	| password newCart newCartId |
 	password := users at: aClientId ifAbsent: [^self error: 'No user'].
 	password = aPassword ifFalse: [^self error: 'No password'].
 	
-	newCart := Cart withCatalog: catalog.
+	newCart := Cart withCatalog: catalog createdAt: aDateAndTime.
+	newCartId := lastCartId +1.
+	lastCartId := newCartId.
+	
+	cartMapping at: newCartId put: newCart.
+	(carts at: aClientId ifAbsentPut: Set new) add: newCartId.
+	^newCartId! !
 
-	(carts at: aClientId ifAbsentPut: Set new) add: newCart.
-	^newCart
-	! !
+!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 22:25:52'!
+listCart: aCartId 
+	^(cartMapping at: aCartId ifAbsent: [^self error: 'No cart']) contents ! !
 
-!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 20:57:26'!
+!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:28:08'!
+listPurchasesWithClientId: aClientId withPassword: aPassword 
+	| cartIds result |
+	users at: aClientId ifAbsent: [^self error: 'No user'].
+	
+	result := Dictionary new.
+	result at: 'purchases' put: Set new.
+	result at: 'total_amount' put: 0.
+	
+	cartIds := carts at: aClientId.
+	cartIds do: [:aCartId | | aCart amount |
+		aCart := cartMapping at: aCartId.
+		(result at: 'purchases') add: aCart contents.
+		amount := result at: 'total_amount'.
+		result at: 'total_amount' put: aCart totalAmount + amount].
+	
+	^result! !
+
+!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:38:33'!
 withUsers: anUserCollection withCarts: aCartCollection withCatalog: aCatalog
 	users := anUserCollection.
 	carts := aCartCollection.
 	catalog := aCatalog.
 	cartMapping := Dictionary new.
+	purchasesMapping := Dictionary new.
+	salesBook := LinkedList new.
+	lastCartId := 0.
 	^self! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!

@@ -5,7 +5,7 @@ TestCase subclass: #TusLibrosTest
 	poolDictionaries: ''
 	category: 'TusLibros-Solution'!
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:47:35'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:24:51'!
 setUp
 	"Books"
 	
@@ -49,8 +49,8 @@ setUp
 	
 	"Merchant Processor"
 	aSuccessfulMerchantProcessor := MerchantProcessor withSaleDo: [:anAmount :aCard | self].
-	aStolenCreditMerchantProcessor := MerchantProcessor withSaleDo: [:anAmount :aCard | self error: 'Credit card is stolen'].
-	aNotEnoughFundsMerchantProcessor := MerchantProcessor withSaleDo: [:anAmount :aCard | self error: 'Not enough funds'].
+	aStolenCreditMerchantProcessor := MerchantProcessor withSaleDo: [:anAmount :aCard | self error: MerchantProcessor stolenCreditCard ].
+	aNotEnoughFundsMerchantProcessor := MerchantProcessor withSaleDo: [:anAmount :aCard | self error: MerchantProcessor notEnoughFunds ].
 	
 	" ClientIds "
 	aClientId := 1.
@@ -65,7 +65,7 @@ setUp
 
 ! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:26:12'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:09:32'!
 test01CantAddBookNotFromPublisher
 	| aCart |
 	
@@ -74,7 +74,7 @@ test01CantAddBookNotFromPublisher
 	self should: [aCart add: aBook]
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [:anError|
-			self assert: anError messageText equals: 'Book is not from publisher'.
+			self assert: anError messageText equals: Cart notFromPublisher.
 			self deny: (aCart includes: aBook)]! !
 
 !TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 00:20:41'!
@@ -101,7 +101,7 @@ test03AddingSameBookSeveralTimesIsEqualToAddingInQuantity
 	self assert: aCart equals: anotherCart.
 	! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:32:03'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:10:02'!
 test04CantAddNonPositiveQuantity
 	| aCart |
 	aCart := anEmptyCartWithACatalog.
@@ -109,14 +109,14 @@ test04CantAddNonPositiveQuantity
 	self should: [aCart add: aBook withQuantity: -1]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError |
-			self assert: anError messageText equals: 'Quantity must be a positive number'.
+			self assert: anError messageText equals: Cart nonPositiveQuantity .
 			self assert: (aCart quantityOf: aBook) equals: 0]
 	
 	
 	
 	! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:29:16'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:10:14'!
 test05CantAddNonIntegerQuantity
 	| aCart |
 
@@ -125,14 +125,14 @@ test05CantAddNonIntegerQuantity
 	self should: [aCart add: aBook withQuantity: 3.1415]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError |
-			self assert: anError messageText equals: 'Quantity must be an integer'.
+			self assert: anError messageText equals: Cart nonIntegerQuantity .
 			self assert: (aCart quantityOf: aBook) equals: 0]
 	
 	
 	
 	! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:30:56'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:10:38'!
 test06CantCheckoutWithEmptyCart
 	| aCart aCashier aCreditCard aMerchantProcessor |
 
@@ -144,14 +144,14 @@ test06CantCheckoutWithEmptyCart
 	self should: [aCashier checkout: aMerchantProcessor]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError |
-			self assert: anError messageText equals: 'Cant checkout empty cart'.
+			self assert: anError messageText equals: Cashier checkoutEmptyCart.
 			self assert: aSalesBook isEmpty]
 	
 	
 	
 	! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:32:56'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:20:23'!
 test07CantCheckoutWithExpiredCreditCard
 	| aCart aCashier anExpiredCreditCard aMerchantProcessor |
 
@@ -165,7 +165,7 @@ test07CantCheckoutWithExpiredCreditCard
 	self should: [aCashier checkout: aMerchantProcessor]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError |
-			self assert: anError messageText equals: 'Credit card is expired'.
+			self assert: anError messageText equals: Cashier expiredCreditCard.
 			self assert: aSalesBook isEmpty]
 	
 	
@@ -206,7 +206,7 @@ test09SuccessfulCheckoutRecordsLastSale
 	
 	! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:34:01'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:12:41'!
 test10CantCheckoutWithStolenCreditCard
 	| aCart aCashier aCreditCard aMerchantProcessor |
 	aCart := anEmptyCartWithACatalog.
@@ -219,7 +219,7 @@ test10CantCheckoutWithStolenCreditCard
 	self should: [aCashier checkout: aMerchantProcessor]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError | 
-			self assert: anError messageText equals: 'Credit card is stolen'.
+			self assert: anError messageText equals: MerchantProcessor stolenCreditCard.
 			self assert: aSalesBook isEmpty]
 	
 	
@@ -227,7 +227,7 @@ test10CantCheckoutWithStolenCreditCard
 	
 	! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:34:46'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:13:26'!
 test11CantCheckoutWithInsufficientAmount
 	| aCart aCashier aCreditCard aMerchantProcessor |
 	aCart := anEmptyCartWithACatalog.
@@ -240,7 +240,7 @@ test11CantCheckoutWithInsufficientAmount
 	self should: [aCashier checkout: aMerchantProcessor]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError | 
-			self assert: anError messageText equals: 'Not enough funds'.
+			self assert: anError messageText equals: MerchantProcessor notEnoughFunds .
 			self assert: aSalesBook isEmpty]
 	
 	
@@ -248,7 +248,7 @@ test11CantCheckoutWithInsufficientAmount
 	
 	! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:36:25'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:14:13'!
 test12CantCreateCartForNotExistingClient
 	| anInterface aClientIdToCartsMapping |
 	aClientIdToCartsMapping := Dictionary new.
@@ -257,10 +257,10 @@ test12CantCreateCartForNotExistingClient
 	self should: [anInterface createCartWithClientId: aClientId withPassword: aPassword atDateTime: aMoment]
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [:anError | 
-			self assert: anError messageText equals: 'Client does not exists'.
+			self assert: anError messageText equals: TusLibrosInterface clientDoesNotExist.
 			self deny: (aClientIdToCartsMapping includesKey: aClientId)]! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:37:34'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:15:26'!
 test13CantCreateCartForClientWithWrongPassword
 	| anInterface aClientIdToCartsMapping aClientIdToPasswordMapping |
 	aClientIdToCartsMapping := Dictionary new.
@@ -271,7 +271,7 @@ test13CantCreateCartForClientWithWrongPassword
 	self should: [anInterface createCartWithClientId: aClientId withPassword: aWrongPassword atDateTime: aMoment]
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [:anError | 
-			self assert: anError messageText equals: 'Incorrect password'.
+			self assert: anError messageText equals: TusLibrosInterface incorrectPassword.
 			self deny: (aClientIdToCartsMapping includesKey: aClientId)]! !
 
 !TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:04:04'!
@@ -287,7 +287,7 @@ test14NewCartIsAssociatedWithClientId
 	self assert: ((aClientIdToCartsMapping at: aClientId) includes: aCartId).
 	! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:38:15'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:16:05'!
 test15CantAddBooksToNonExistingCart
 	| anInterface aClientIdToCartsMapping aClientIdToPasswordMapping aCartId|
 	aClientIdToCartsMapping := Dictionary new.
@@ -299,7 +299,7 @@ test15CantAddBooksToNonExistingCart
 	self should: [anInterface addToCart: aCartId thisBook: aBook withQuantity: aQuantity atDateTime: aMoment]
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [:anError | 
-			self assert: anError messageText equals: 'Cart does not exist']
+			self assert: anError messageText equals: TusLibrosInterface cartDoesNotExist]
 	
 	! !
 
@@ -318,7 +318,7 @@ test16AddedBookIsIncludedInCartList
 	
 	! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:38:45'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:16:36'!
 test17CantListCartOfNonExistingCart
 	| anInterface aClientIdToCartsMapping aClientIdToPasswordMapping aCartId|
 	aClientIdToCartsMapping := Dictionary new.
@@ -330,14 +330,14 @@ test17CantListCartOfNonExistingCart
 	self should: [anInterface listCart: aCartId atDateTime: aMoment]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError |
-			self assert: anError messageText equals: 'Cart does not exist'].
+			self assert: anError messageText equals: TusLibrosInterface cartDoesNotExist ].
 	
 	
 
 	
 	! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:38:51'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:16:50'!
 test18CantCheckoutNonExistingCart
 	| anInterface aClientIdToCartsMapping aClientIdToPasswordMapping aCartId|
 	aClientIdToCartsMapping := Dictionary new.
@@ -349,7 +349,7 @@ test18CantCheckoutNonExistingCart
 	self should: [anInterface checkOutCart: aCartId withCreditCard: aCreditCardWhichExpires2017_11_1 atDate: aMoment]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError |
-			self assert: anError messageText equals: 'Cart does not exist']
+			self assert: anError messageText equals: TusLibrosInterface cartDoesNotExist]
 	
 	
 
@@ -380,7 +380,7 @@ test19SuccessfulCheckoutRecordPurchase
 	
 	! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:39:26'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:17:08'!
 test20CantListPurchasesForNonExistingClientId
 	| anInterface aClientIdToCartsMapping |
 	aClientIdToCartsMapping := Dictionary new.
@@ -389,7 +389,7 @@ test20CantListPurchasesForNonExistingClientId
 	self should: [anInterface listPurchasesWithClientId: aClientId withPassword: aPassword]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError |
-			self assert: anError messageText equals: 'Client does not exists']
+			self assert: anError messageText equals: TusLibrosInterface clientDoesNotExist ]
 	
 	
 	
@@ -397,7 +397,7 @@ test20CantListPurchasesForNonExistingClientId
 	
 	! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:44:07'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:25:22'!
 test21CantCreateCashierWithExpiredCart
 	| aCart|
 	aCart := anEmptyCartWithACatalog.
@@ -405,7 +405,7 @@ test21CantCreateCashierWithExpiredCart
 	self should: [Cashier withCart: aCart withCreditCard: aCreditCardWhichExpires2017_11_1 atDate: aMoment40MinutesLater withSalesBook: aSalesBook.]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError |
-			self assert: anError messageText equals: 'Cart has expired']
+			self assert: anError messageText equals: Cashier cartHasExpired]
 	
 
 	
@@ -413,7 +413,7 @@ test21CantCreateCashierWithExpiredCart
 	
 	! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:42:55'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:17:57'!
 test22CantListPurchasesForClientWithWrongPassword
 	| anInterface aClientIdToCartsMapping aClientIdToPasswordMapping |
 	aClientIdToCartsMapping := Dictionary new.
@@ -424,7 +424,7 @@ test22CantListPurchasesForClientWithWrongPassword
 	self should: [anInterface listPurchasesWithClientId: aClientId withPassword: aWrongPassword]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError |
-			self assert: anError messageText equals: 'Incorrect password']
+			self assert: anError messageText equals: TusLibrosInterface incorrectPassword ]
 	
 	
 	
@@ -432,7 +432,7 @@ test22CantListPurchasesForClientWithWrongPassword
 	
 	! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:44:37'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:18:16'!
 test23CantAddItemsToExpiredCart
 	| aCartId anInterface aClientIdToCartsMapping aClientIdToPasswordMapping |
 	aClientIdToCartsMapping := Dictionary new.
@@ -445,7 +445,7 @@ test23CantAddItemsToExpiredCart
 	self should: [anInterface addToCart: aCartId thisBook: aBook  withQuantity: aQuantity atDateTime: aMoment40MinutesLater ]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError |
-			self assert: anError messageText equals: 'Cart has expired']
+			self assert: anError messageText equals: TusLibrosInterface cartHasExpired ]
 	
 
 	
@@ -453,7 +453,7 @@ test23CantAddItemsToExpiredCart
 	
 	! !
 
-!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 01:44:42'!
+!TusLibrosTest methodsFor: 'testing' stamp: 'DIC 6/27/2017 14:18:29'!
 test24CantListCartForExpiredCart
 	| aCartId anInterface aClientIdToCartsMapping aClientIdToPasswordMapping |
 	aClientIdToCartsMapping := Dictionary new.
@@ -467,7 +467,7 @@ test24CantListCartForExpiredCart
 	self should: [anInterface listCart: aCartId atDateTime: aMoment40MinutesLater ]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError |
-			self assert: anError messageText equals: 'Cart has expired']
+			self assert: anError messageText equals: TusLibrosInterface cartHasExpired ]
 	
 
 	
@@ -523,11 +523,11 @@ add: aBook
 	^self add: aBook withQuantity: 1.
 	! !
 
-!Cart methodsFor: 'adding' stamp: 'DIC 6/27/2017 01:32:15'!
+!Cart methodsFor: 'adding' stamp: 'DIC 6/27/2017 14:09:09'!
 add: aBook withQuantity: anInteger
-	anInteger > 0 ifFalse: [self error: 'Quantity must be a positive number'].
-	(anInteger isKindOf: Integer) ifFalse: [self error: 'Quantity must be an integer'].
-	(catalog keys includes: aBook) ifFalse: [self error: 'Book is not from publisher']. 
+	anInteger > 0 ifFalse: [self error: self class nonPositiveQuantity ].
+	(anInteger isKindOf: Integer) ifFalse: [self error: self class nonIntegerQuantity ].
+	(catalog keys includes: aBook) ifFalse: [self error: self class notFromPublisher ]. 
 	contents add: aBook withOccurrences: anInteger.
 	^self! !
 
@@ -553,8 +553,12 @@ nonIntegerQuantity
 nonPositiveQuantity
 	^'Quantity must be positive'! !
 
+!Cart class methodsFor: 'errors' stamp: 'DIC 6/27/2017 14:07:59'!
+notFromPublisher
+	^'Book is not from publisher'! !
 
-!Cart class methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 23:45:08'!
+
+!Cart class methodsFor: 'creation' stamp: 'DIC 6/24/2017 23:45:08'!
 withCatalog: aCatalog createdAt: aDateTime
 	^self new initializeWithCatalog: aCatalog createdAt: aDateTime! !
 
@@ -566,21 +570,17 @@ Object subclass: #Cashier
 	poolDictionaries: ''
 	category: 'TusLibros-Solution'!
 
-!Cashier methodsFor: 'operations' stamp: 'DIC 6/27/2017 01:33:06'!
+!Cashier methodsFor: 'operations' stamp: 'DIC 6/27/2017 14:20:59'!
 checkout: aMerchantProcessor
 	| totalAmount |
-	cart isEmpty ifTrue: [self error: 'Cant checkout empty cart'].
-	(card isExpiredAt: currentDate) ifTrue: [self error: 'Credit card is expired'].
+	cart isEmpty ifTrue: [self error: self class checkoutEmptyCart ].
+	(card isExpiredAt: currentDate) ifTrue: [self error: self class expiredCreditCard ].
 	
 	totalAmount := cart totalAmount.
 	aMerchantProcessor debitAmount: totalAmount withCreditCard: card.
 	salesBook addLast: totalAmount.
 	
 	^totalAmount! !
-
-!Cashier methodsFor: 'operations' stamp: 'DIC 6/24/2017 19:14:11'!
-debitAmount: anAmount withCreditCard: aCreditCard 
-	^merchantProcessor debitAmount: anAmount withCreditCard: aCreditCard! !
 
 
 !Cashier methodsFor: 'initializing' stamp: 'DIC 6/24/2017 18:52:54'!
@@ -597,11 +597,24 @@ initializeWithCart: aCart withCreditCard: aCreditCard atDate: aDate withSalesBoo
 Cashier class
 	instanceVariableNames: ''!
 
-!Cashier class methodsFor: 'as yet unclassified' stamp: 'DIC 6/27/2017 01:45:39'!
+!Cashier class methodsFor: 'creation' stamp: 'DIC 6/27/2017 14:23:25'!
 withCart: aCart withCreditCard: aCreditCard atDate: aDate withSalesBook: aSalesBook.
-	aCart createdAt + (Duration minutes: 30) > aDate ifFalse: [^self error: 'Cart has expired'].
+	aCart createdAt + (Duration minutes: 30) > aDate ifFalse: [^self error: self cartHasExpired ].
 	
 	^self new initializeWithCart: aCart withCreditCard: aCreditCard atDate: aDate withSalesBook: aSalesBook.! !
+
+
+!Cashier class methodsFor: 'errors' stamp: 'DIC 6/27/2017 14:23:54'!
+cartHasExpired
+	^'Cart has expired'! !
+
+!Cashier class methodsFor: 'errors' stamp: 'DIC 6/27/2017 14:11:37'!
+checkoutEmptyCart
+	^'Cant checkout empty cart'! !
+
+!Cashier class methodsFor: 'errors' stamp: 'DIC 6/27/2017 14:20:37'!
+expiredCreditCard
+	^'Credit card is expired'! !
 
 
 !classDefinition: #CreditCard category: #'TusLibros-Solution'!
@@ -611,14 +624,15 @@ Object subclass: #CreditCard
 	poolDictionaries: ''
 	category: 'TusLibros-Solution'!
 
-!CreditCard methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 23:56:29'!
+!CreditCard methodsFor: 'initialization' stamp: 'DIC 6/19/2017 23:56:29'!
 initializeWithExpireDate: aDate 
 	expireDate := aDate.
 	^self! !
 
-!CreditCard methodsFor: 'as yet unclassified' stamp: 'DIC 6/20/2017 00:05:11'!
+!CreditCard methodsFor: 'initialization' stamp: 'DIC 6/20/2017 00:05:11'!
 isExpiredAt: aDate
 	^expireDate < aDate! !
+
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -626,7 +640,7 @@ isExpiredAt: aDate
 CreditCard class
 	instanceVariableNames: ''!
 
-!CreditCard class methodsFor: 'as yet unclassified' stamp: 'DIC 6/19/2017 23:56:00'!
+!CreditCard class methodsFor: 'creation' stamp: 'DIC 6/19/2017 23:56:00'!
 withExpireDate: aDate 
 	^self new initializeWithExpireDate: aDate! !
 
@@ -638,14 +652,15 @@ Object subclass: #MerchantProcessor
 	poolDictionaries: ''
 	category: 'TusLibros-Solution'!
 
-!MerchantProcessor methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 19:23:48'!
-debitAmount: anAmount withCreditCard: aCreditCard 
-	saleAction value: anAmount value: aCreditCard.! !
-
-!MerchantProcessor methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 19:22:54'!
+!MerchantProcessor methodsFor: 'initialization' stamp: 'DIC 6/24/2017 19:22:54'!
 initializeWithSaleDo: aMethod
 	saleAction := aMethod.
 	^self! !
+
+
+!MerchantProcessor methodsFor: 'operating' stamp: 'DIC 6/24/2017 19:23:48'!
+debitAmount: anAmount withCreditCard: aCreditCard 
+	saleAction value: anAmount value: aCreditCard.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -653,10 +668,19 @@ initializeWithSaleDo: aMethod
 MerchantProcessor class
 	instanceVariableNames: ''!
 
-!MerchantProcessor class methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 19:22:17'!
+!MerchantProcessor class methodsFor: 'creation' stamp: 'DIC 6/24/2017 19:22:17'!
 withSaleDo: aMethod
 	^self new initializeWithSaleDo: aMethod
 	! !
+
+
+!MerchantProcessor class methodsFor: 'errors' stamp: 'DIC 6/27/2017 14:13:43'!
+notEnoughFunds
+	^'Not enough funds'! !
+
+!MerchantProcessor class methodsFor: 'errors' stamp: 'DIC 6/27/2017 14:13:00'!
+stolenCreditCard
+	^'Credit card is stolen'! !
 
 
 !classDefinition: #TusLibrosInterface category: #'TusLibros-Solution'!
@@ -666,7 +690,7 @@ Object subclass: #TusLibrosInterface
 	poolDictionaries: ''
 	category: 'TusLibros-Solution'!
 
-!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/26/2017 23:57:38'!
+!TusLibrosInterface methodsFor: 'endpoints' stamp: 'DIC 6/26/2017 23:57:38'!
 addToCart: aCartId thisBook: aBook withQuantity: aQuantity atDateTime: aDateTime
 	| cart |
 	cart := self findAndValidateCart: aCartId atDateTime: aDateTime.
@@ -675,7 +699,7 @@ addToCart: aCartId thisBook: aBook withQuantity: aQuantity atDateTime: aDateTime
 	
 	! !
 
-!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/27/2017 00:07:32'!
+!TusLibrosInterface methodsFor: 'endpoints' stamp: 'DIC 6/27/2017 00:07:32'!
 checkOutCart: aCartId withCreditCard: aCreditCard atDate: aDateTime
 	|aCart aCashier aClientId totalAmount purchasesPerClient totalAmountPerClient clientAccountSummary |
 	aCart := self findAndValidateCart: aCartId atDateTime: aDateTime.
@@ -702,7 +726,7 @@ checkOutCart: aCartId withCreditCard: aCreditCard atDate: aDateTime
 	cartMapping removeKey: aCartId.
 	! !
 
-!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/27/2017 01:42:03'!
+!TusLibrosInterface methodsFor: 'endpoints' stamp: 'DIC 6/27/2017 01:42:03'!
 createCartWithClientId: aClientId withPassword: aPassword atDateTime: aDateAndTime 
 	| newCart newCartId |
 	self validateClientId: aClientId withPassword: aPassword.
@@ -715,21 +739,13 @@ createCartWithClientId: aClientId withPassword: aPassword atDateTime: aDateAndTi
 	(carts at: aClientId ifAbsentPut: Set new) add: newCartId.
 	^newCartId! !
 
-!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/27/2017 01:44:23'!
-findAndValidateCart: aCartId atDateTime: aDateTime
-	| aCart |
-	aCart := cartMapping at: aCartId ifAbsent: [^self error: 'Cart does not exist'].
-	aCart createdAt + (Duration minutes: 30) > aDateTime ifFalse: [^self error: 'Cart has expired'].
-	^aCart
-	! !
-
-!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/27/2017 00:06:25'!
+!TusLibrosInterface methodsFor: 'endpoints' stamp: 'DIC 6/27/2017 00:06:25'!
 listCart: aCartId atDateTime: aDateTime
 	| aCart |
 	aCart := self findAndValidateCart: aCartId atDateTime: aDateTime.
 	^aCart contents ! !
 
-!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/27/2017 01:41:43'!
+!TusLibrosInterface methodsFor: 'endpoints' stamp: 'DIC 6/27/2017 01:41:43'!
 listPurchasesWithClientId: aClientId withPassword: aPassword 
 	self validateClientId: aClientId withPassword: aPassword.
 		
@@ -740,14 +756,24 @@ listPurchasesWithClientId: aClientId withPassword: aPassword
 		^clientAccountSummary]
 ! !
 
-!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/27/2017 01:42:39'!
-validateClientId: aClientId withPassword: aPassword
-	| clientPassword |
-	clientPassword := users at: aClientId ifAbsent: [^self error: 'Client does not exists'].
-	clientPassword = aPassword ifFalse: [^self error: 'Incorrect password'].
+
+!TusLibrosInterface methodsFor: 'private' stamp: 'DIC 6/27/2017 14:22:43'!
+findAndValidateCart: aCartId atDateTime: aDateTime
+	| aCart |
+	aCart := cartMapping at: aCartId ifAbsent: [^self error: self class cartDoesNotExist ].
+	aCart createdAt + (Duration minutes: 30) > aDateTime ifFalse: [^self error: self class cartHasExpired ].
+	^aCart
 	! !
 
-!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/25/2017 00:38:33'!
+!TusLibrosInterface methodsFor: 'private' stamp: 'DIC 6/27/2017 14:23:01'!
+validateClientId: aClientId withPassword: aPassword
+	| clientPassword |
+	clientPassword := users at: aClientId ifAbsent: [^self error: self class clientDoesNotExist ].
+	clientPassword = aPassword ifFalse: [^self error: self class incorrectPassword ].
+	! !
+
+
+!TusLibrosInterface methodsFor: 'initialization' stamp: 'DIC 6/25/2017 00:38:33'!
 withUsers: anUserCollection withCarts: aCartCollection withCatalog: aCatalog
 	users := anUserCollection.
 	carts := aCartCollection.
@@ -764,6 +790,23 @@ withUsers: anUserCollection withCarts: aCartCollection withCatalog: aCatalog
 TusLibrosInterface class
 	instanceVariableNames: ''!
 
-!TusLibrosInterface class methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 20:49:24'!
+!TusLibrosInterface class methodsFor: 'creation' stamp: 'DIC 6/24/2017 20:49:24'!
 withUsers: aUserCollection withCarts: aCartCollection withCatalog: aCatalog
 	^self new withUsers: aUserCollection withCarts: aCartCollection withCatalog: aCatalog! !
+
+
+!TusLibrosInterface class methodsFor: 'errors' stamp: 'DIC 6/27/2017 14:16:17'!
+cartDoesNotExist
+	^'Cart does not exist'! !
+
+!TusLibrosInterface class methodsFor: 'errors' stamp: 'DIC 6/27/2017 14:17:43'!
+cartHasExpired
+	^'Cart has expired'! !
+
+!TusLibrosInterface class methodsFor: 'errors' stamp: 'DIC 6/27/2017 14:14:29'!
+clientDoesNotExist
+	^'Client does not exists'! !
+
+!TusLibrosInterface class methodsFor: 'errors' stamp: 'DIC 6/27/2017 14:15:41'!
+incorrectPassword
+	^'Incorrect password'! !

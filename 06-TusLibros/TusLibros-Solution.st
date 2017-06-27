@@ -1,11 +1,20 @@
 !classDefinition: #TusLibrosTest category: #'TusLibros-Solution'!
 TestCase subclass: #TusLibrosTest
-	instanceVariableNames: ''
+	instanceVariableNames: 'anEmptyCatalog aBook anotherBook aBookCost aQuantity'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros-Solution'!
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 23:48:03'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/26/2017 23:52:49'!
+setUp
+	anEmptyCatalog := Dictionary new.
+	aBook := #ISBN000.
+	anotherBook := #ISBN001.
+	aBookCost := 5.
+	aQuantity := 2.
+! !
+
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/26/2017 23:53:13'!
 test01CantAddBookNotFromPublisher
 | aCatalog aCart aBook |
 	aCatalog := Dictionary new.
@@ -18,7 +27,7 @@ test01CantAddBookNotFromPublisher
 			self assert: anError messageText equals: 'NO'.
 			self deny: (aCart includes: aBook)]! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 23:48:20'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/26/2017 23:58:35'!
 test02AddedBookIsInCart
 | aCatalog aCart aBook aBookCost|
 	aBook := #book.
@@ -294,7 +303,7 @@ test15CantAddBooksToNonExistingCart
 	
 	! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/26/2017 23:37:09'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/27/2017 00:03:57'!
 test16AddedBookIsIncludedInCartList
 	| anInterface aClientId aClientIdCartsMapping aPassword anUserCollection aCartId aBook aQuantity aBookCost aCatalog |
 	aClientIdCartsMapping := Dictionary new.
@@ -312,11 +321,11 @@ test16AddedBookIsIncludedInCartList
 	aCartId := anInterface createCartWithClientId: aClientId withPassword: aPassword atDateTime: (DateAndTime year: 2017 month: 5 day: 1 hour: 2 minute: 0 ).
 	anInterface addToCart: aCartId thisBook: aBook withQuantity: aQuantity atDateTime: (DateAndTime year: 2017 month: 5  day: 1  hour: 2  minute: 1) .
 	
-	self assert: ((anInterface listCart: aCartId) occurrencesOf: aBook) equals: aQuantity 
+	self assert: ((anInterface listCart: aCartId atDateTime: (DateAndTime year: 2017 month: 5  day: 1  hour: 2  minute: 2)) occurrencesOf: aBook) equals: aQuantity 
 	
 	! !
 
-!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 22:25:22'!
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/27/2017 00:04:22'!
 test17CantListCartOfNonExistingCart
 	| anInterface aClientId aClientIdCartsMapping aPassword anUserCollection aCartId aCatalog |
 	aClientIdCartsMapping := Dictionary new.
@@ -328,7 +337,7 @@ test17CantListCartOfNonExistingCart
 	aCatalog := Dictionary new.
 	anInterface := TusLibrosInterface withUsers: anUserCollection withCarts: aClientIdCartsMapping withCatalog: aCatalog.
 	
-	self should: [anInterface listCart: aCartId]
+	self should: [anInterface listCart: aCartId atDateTime: (DateAndTime year: 2017 month: 5  day: 1  hour: 2  minute: 0)]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError |
 			self assert: anError messageText equals: 'No cart'].
@@ -479,6 +488,38 @@ test23CantAddItemsToExpiredCart
 	aCartId := anInterface createCartWithClientId: aClientId withPassword: aPassword atDateTime: aMoment.
 	
 	self should: [anInterface addToCart: aCartId thisBook: aBook  withQuantity: aQuantity atDateTime: aMoment40MinutesLater ]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [:anError |
+			self assert: anError messageText equals: 'Expired cart']
+	
+
+	
+
+	
+	! !
+
+!TusLibrosTest methodsFor: 'as yet unclassified' stamp: 'DIC 6/27/2017 00:01:45'!
+test23CantListCartForExpiredCart
+	| aCatalog aMoment aMoment40MinutesLater aBook aBookCost aCartId aClientId aClientIdCartsMapping aPassword aQuantity anInterface anUserCollection aMoment20MinutesLater |
+	aMoment := DateAndTime year: 2017 month: 6 day: 1  hour: 2 minute: 0.
+	aMoment20MinutesLater := aMoment + (Duration minutes: 20).
+	aMoment40MinutesLater := aMoment + (Duration minutes: 40).	
+	aClientIdCartsMapping := Dictionary new.
+	aClientId := 1.
+	aPassword := 'password'.
+	anUserCollection := Dictionary new.
+	anUserCollection at: aClientId put: aPassword.
+	aBook := #ISNB000.
+	aQuantity := 1.
+	aBookCost := 5.
+	aCatalog := Dictionary new.
+	aCatalog at: aBook put: aBookCost.
+	
+	anInterface := TusLibrosInterface withUsers: anUserCollection withCarts: aClientIdCartsMapping withCatalog: aCatalog.
+	aCartId := anInterface createCartWithClientId: aClientId withPassword: aPassword atDateTime: aMoment.
+	anInterface addToCart: aCartId thisBook: aBook  withQuantity: aQuantity atDateTime: aMoment20MinutesLater.
+	
+	self should: [anInterface listCart: aCartId atDateTime: aMoment40MinutesLater ]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [:anError |
 			self assert: anError messageText equals: 'Expired cart']
@@ -700,20 +741,19 @@ Object subclass: #TusLibrosInterface
 	poolDictionaries: ''
 	category: 'TusLibros-Solution'!
 
-!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/26/2017 23:40:00'!
+!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/26/2017 23:57:38'!
 addToCart: aCartId thisBook: aBook withQuantity: aQuantity atDateTime: aDateTime
 	| cart |
-	cart := cartMapping at: aCartId ifAbsent: [^self error: 'No cart'].
-	cart createdAt + (Duration minutes: 30) > aDateTime ifFalse: [^self error: 'Expired cart'].
+	cart := self findAndValidateCart: aCartId atDateTime: aDateTime.
 	cart add: aBook withQuantity: aQuantity.
 	^self
 	
 	! !
 
-!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/26/2017 23:10:41'!
+!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/27/2017 00:07:32'!
 checkOutCart: aCartId withCreditCard: aCreditCard atDate: aDateTime
 	|aCart aCashier aClientId totalAmount purchasesPerClient totalAmountPerClient clientAccountSummary |
-	aCart := cartMapping at: aCartId ifAbsent: [^self error: 'No cart'].
+	aCart := self findAndValidateCart: aCartId atDateTime: aDateTime.
 	
 	aCashier := Cashier withCart: aCart withCreditCard: aCreditCard atDate: aDateTime withSalesBook: salesBook.
 	
@@ -751,9 +791,19 @@ createCartWithClientId: aClientId withPassword: aPassword atDateTime: aDateAndTi
 	(carts at: aClientId ifAbsentPut: Set new) add: newCartId.
 	^newCartId! !
 
-!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/24/2017 22:25:52'!
-listCart: aCartId 
-	^(cartMapping at: aCartId ifAbsent: [^self error: 'No cart']) contents ! !
+!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/26/2017 23:56:22'!
+findAndValidateCart: aCartId atDateTime: aDateTime
+	| aCart |
+	aCart := cartMapping at: aCartId ifAbsent: [^self error: 'No cart'].
+	aCart createdAt + (Duration minutes: 30) > aDateTime ifFalse: [^self error: 'Expired cart'].
+	^aCart
+	! !
+
+!TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/27/2017 00:06:25'!
+listCart: aCartId atDateTime: aDateTime
+	| aCart |
+	aCart := self findAndValidateCart: aCartId atDateTime: aDateTime.
+	^aCart contents ! !
 
 !TusLibrosInterface methodsFor: 'as yet unclassified' stamp: 'DIC 6/26/2017 23:19:07'!
 listPurchasesWithClientId: aClientId withPassword: aPassword 
